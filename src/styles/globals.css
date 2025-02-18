@@ -9,10 +9,13 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
   background-image: radial-gradient(
-    circle farthest-side at 50% 100%,rgba(1, 9, 18, 0),
-    rgba(1, 6, 14, 0.6) 36%,
-    rgba(1, 14, 29, 0.6) 55%,
-    rgba(49, 18, 93, 0.4));
+    ellipse 60% 80% at 50% 90%, 
+    rgba(255, 235, 178, 0), /* Subtle glow */
+    rgba(255, 215, 120, 0.7) 30%, /* Warm pear-like yellow */
+    rgba(34, 139, 34, 0.9) 60%, /* Rich green */
+    rgba(0, 100, 0, 1) 85% /* Deep green for contrast */
+  );
+    
 }
 
 a {
