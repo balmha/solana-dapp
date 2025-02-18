@@ -1,7 +1,7 @@
 {
-  "name": "solana-dapp-next",
-  "version": "0.2.0",
-  "author": "Solana Maintainers <maintainers@solana.foundation>",
+  "name": "peer-dapp",
+  "version": "1.0.0",
+  "author": "Peer Wallet mantainers <maintainers@peerwallet.com>",
   "license": "MIT",
   "private": false,
   "scripts": {

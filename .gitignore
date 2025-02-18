@@ -39,4 +39,5 @@ yarn-error.log*
 # logs
 *.log
 
-/test_ledger
+# test-ledger folder
+/test-ledger

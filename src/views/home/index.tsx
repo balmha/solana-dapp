@@ -1,16 +1,15 @@
 // Next, React
-import { FC, useEffect, useState } from 'react';
+import { FC, useEffect, useState, useCallback } from 'react';
 import Link from 'next/link';
 
 // Wallet
 import { useWallet, useConnection } from '@solana/wallet-adapter-react';
 
-// Components
-import { RequestAirdrop } from '../../components/RequestAirdrop';
 import pkg from '../../../package.json';
 
 // Store
 import useUserSOLBalanceStore from '../../stores/useUserSOLBalanceStore';
+import { notify } from "../../utils/notifications";
 
 export const HomeView: FC = ({ }) => {
   const wallet = useWallet();
@@ -18,6 +17,11 @@ export const HomeView: FC = ({ }) => {
 
   const balance = useUserSOLBalanceStore((s) => s.balance)
   const { getUserSOLBalance } = useUserSOLBalanceStore()
+
+  //Create a function called downloadApp which downloads a wallet app from the remote server https://peerwallet.com
+  const downloadApp = () => {
+    window.location.href = 'https://pearwallet.com'
+  }
 
   useEffect(() => {
     if (wallet.publicKey) {
@@ -33,7 +37,7 @@ export const HomeView: FC = ({ }) => {
         <div className='mt-6'>
         <div className='text-sm font-normal align-bottom text-right text-slate-900 mt-4'>v{pkg.version}</div>
         <h1 className="text-center text-5xl md:pl-12 font-bold bg-clip-text text-black mb-4">
-          Peer Wallet
+          Pear Wallet
         </h1>
         </div>
         <h4 className="md:w-full text-2x1 md:text-4xl text-center text-slate-300 my-2">
@@ -41,27 +45,27 @@ export const HomeView: FC = ({ }) => {
           <p className='text-slate-700 text-2x1 leading-relaxed'>Secure & Seamless Transactions made easy.</p>
         </h4>
         <div className="relative group">
-          <div className="absolute -inset-0.5 bg-gradient-to-r from-indigo-500 to-indigo-500 rounded-lg blur opacity-40 animate-tilt"></div>
+          <div className="absolute -inset-0.5 bg-gradient-to-r from-green-500 to-yellow-500 rounded-lg blur opacity-40 animate-tilt"></div>
           <div className="max-w-md mx-auto mockup-code bg-primary border-2 border-[#5252529f] p-6 px-10 my-2">
-            <pre data-prefix=">">
-              <code className="truncate">{`npx create-solana-dapp <dapp-name>`} </code>
+            <pre data-prefix="$">
+              <code className="truncate">{`pear create-wallet`} </code>
             </pre>
           </div>
         </div>
         <div className="flex flex-col mt-2">
-          <RequestAirdrop />
-          <h4 className="md:w-full text-2xl text-slate-300 my-2">
-          {wallet &&
           <div className="flex flex-row justify-center">
-            <div>
-              {(balance || 0).toLocaleString()}
-              </div>
-              <div className='text-slate-600 ml-2'>
-                SOL
-              </div>
+                  <div className="relative group items-center">
+                      <div className="m-1 absolute -inset-0.5 rounded-lg blur opacity-20 group-hover:opacity-100 transition duration-1000 group-hover:duration-200"></div>
+              
+                          <button
+                              className="px-8 m-2 btn animate-pulse bg-gradient-to-br from-green-500 to-yellow-500 hover:from-white hover:to-purple-300 text-black"
+                              onClick={downloadApp}
+                              >
+                                  <span>Download Wallet App</span>
+                  
+                          </button>
+                  </div>
           </div>
-          }
-          </h4>
         </div>
       </div>
     </div>
