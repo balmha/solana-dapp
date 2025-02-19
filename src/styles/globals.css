@@ -15,8 +15,7 @@ body {
     rgba(34, 139, 34, 0.9) 60%, /* Rich green */
     rgba(0, 100, 0, 1) 85% /* Deep green for contrast */
   );
-    
-}
+};
 
 a {
   color: inherit;
@@ -32,3 +31,14 @@ a {
   background-color: #707070;
 }
 
+/* Hide number input arrows for Chrome, Safari, Edge, Opera */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Hide number input arrows for Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}

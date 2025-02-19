@@ -1,20 +1,20 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import { HomeView } from "../views";
+import { LiquidityView } from "../views";
 
-const Home: NextPage = (props) => {
+const Liquidity: NextPage = (props) => {
   return (
     <div>
       <Head>
         <title>Pear Wallet</title>
         <meta
           name="description"
-          content="Home"
+          content="Liquidity Pool Functionality"
         />
       </Head>
-      <HomeView />
+      <LiquidityView />
     </div>
   );
 };
 
-export default Home;
+export default Liquidity;

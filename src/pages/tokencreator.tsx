@@ -1,20 +1,20 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import { HomeView } from "../views";
+import { CreatorView } from "../views";
 
-const Home: NextPage = (props) => {
+const Creator: NextPage = (props) => {
   return (
     <div>
       <Head>
         <title>Pear Wallet</title>
         <meta
           name="description"
-          content="Home"
+          content="Token Creator Functionality"
         />
       </Head>
-      <HomeView />
+      <CreatorView />
     </div>
   );
 };
 
-export default Home;
+export default Creator;

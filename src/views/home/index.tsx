@@ -4,12 +4,12 @@ import Link from 'next/link';
 
 // Wallet
 import { useWallet, useConnection } from '@solana/wallet-adapter-react';
+import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
 
 import pkg from '../../../package.json';
 
 // Store
 import useUserSOLBalanceStore from '../../stores/useUserSOLBalanceStore';
-import { notify } from "../../utils/notifications";
 
 export const HomeView: FC = ({ }) => {
   const wallet = useWallet();
@@ -37,22 +37,29 @@ export const HomeView: FC = ({ }) => {
         <div className='mt-6'>
         <div className='text-sm font-normal align-bottom text-right text-slate-900 mt-4'>v{pkg.version}</div>
         <h1 className="text-center text-5xl md:pl-12 font-bold bg-clip-text text-black mb-4">
-          Pear Wallet
+          Pear Tools
         </h1>
         </div>
         <h4 className="md:w-full text-2x1 md:text-4xl text-center text-slate-300 my-2">
-          <p className='text-slate-900 font-semibold'>Unleash the power of the seamless, secure, and smart way to manage your digital assets anytime, anywhere.</p><br></br>
-          <p className='text-slate-700 text-2x1 leading-relaxed'>Secure & Seamless Transactions made easy.</p>
+          <p className='text-slate-900 font-semibold'>Create and Manage Tokens on Solana.</p><br></br>
+          <p className='text-slate-700 text-2x1 leading-relaxed'>Easily create SPL tokens and liquidity pools with Pear Tools.</p>
         </h4>
-        <div className="relative group">
-          <div className="absolute -inset-0.5 bg-gradient-to-r from-green-500 to-yellow-500 rounded-lg blur opacity-40 animate-tilt"></div>
-          <div className="max-w-md mx-auto mockup-code bg-primary border-2 border-[#5252529f] p-6 px-10 my-2">
-            <pre data-prefix="$">
-              <code className="truncate">{`pear create-wallet`} </code>
-            </pre>
-          </div>
+        <br></br>
+        <div className="space-x-4">
+          <Link
+            href="/tokencreator"
+            className="bg-green-500 hover:bg-green-700 text-white font-bold py-3 px-6 rounded"
+          >
+            Create Token
+          </Link>
+          <Link
+            href="/liquiditypool"
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded"
+          >
+            Create Pool
+          </Link>
         </div>
-        <div className="flex flex-col mt-2">
+        {/* <div className="flex flex-col mt-2">
           <div className="flex flex-row justify-center">
                   <div className="relative group items-center">
                       <div className="m-1 absolute -inset-0.5 rounded-lg blur opacity-20 group-hover:opacity-100 transition duration-1000 group-hover:duration-200"></div>
@@ -66,7 +73,7 @@ export const HomeView: FC = ({ }) => {
                           </button>
                   </div>
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );
