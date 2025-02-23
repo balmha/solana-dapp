@@ -35,26 +35,26 @@ export const HomeView: FC = ({ }) => {
     <div className="md:hero mx-auto p-4">
       <div className="md:hero-content flex flex-col">
         <div className='mt-6'>
-        <div className='text-sm font-normal align-bottom text-right text-slate-900 mt-4'>v{pkg.version}</div>
+        <div className='text-sm font-normal align-bottom text-right text-black mt-4'>v{pkg.version}</div>
         <h1 className="text-center text-5xl md:pl-12 font-bold bg-clip-text text-black mb-4">
           Pear Tools
         </h1>
         </div>
         <h4 className="md:w-full text-2x1 md:text-4xl text-center text-slate-300 my-2">
           <p className='text-slate-900 font-semibold'>Create and Manage Tokens on Solana.</p><br></br>
-          <p className='text-slate-700 text-2x1 leading-relaxed'>Easily create SPL tokens and liquidity pools with Pear Tools.</p>
+          <p className='text-slate-900 text-2x1 leading-relaxed'>Easily create SPL tokens and liquidity pools with Pear Tools.</p>
         </h4>
         <br></br>
         <div className="space-x-4">
           <Link
             href="/tokencreator"
-            className="bg-green-500 hover:bg-green-700 text-white font-bold py-3 px-6 rounded"
+            className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-3 px-6 rounded"
           >
             Create Token
           </Link>
           <Link
             href="/liquiditypool"
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded"
+            className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-3 px-6 rounded"
           >
             Create Pool
           </Link>

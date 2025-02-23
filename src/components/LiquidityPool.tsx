@@ -43,10 +43,25 @@ export const LiquidityPool = () => {
 		}
 	};
 
+	// Handle 50% button click
+	const handleFiftyPercent = () => {
+		const numericValue = parseFloat(amount); // Convert input value to a number
+		if (!isNaN(numericValue)) {
+			setAmount((numericValue / 2).toString()); // Divide by 2 and update the state
+		}
+	  };
+	
+	  const handleQuoteFiftyPercent = () => {
+		const numericValue = parseFloat(QuoteAmount); // Convert input value to a number
+		if (!isNaN(numericValue)) {
+			setQuoteAmount((numericValue / 2).toString()); // Divide by 2 and update the state
+		}
+	  };
+
 	return (
 		<div id="webcrumbs">
-			<div className="w-[1200px] bg-gradient-to-br from-indigo-950 via-purple-900 to-indigo-950 p-8 rounded-xl flex gap-8">
-				<div className="w-[500px] bg-indigo-950/50 backdrop-blur-sm p-6 rounded-xl border border-indigo-800/30">
+			<div className="bg-gradient-to-br from-indigo-950 via-purple-900 to-indigo-950 p-8 rounded-xl flex gap-8">
+				<div className="w-3/2 bg-indigo-950/50 backdrop-blur-sm p-6 rounded-xl border border-indigo-800/30">
 					<h2 className="text-white text-2xl font-semibold mb-6">Initialize Liquidity</h2>
 					<div className="space-y-6">
 						<div className="relative">
@@ -54,7 +69,11 @@ export const LiquidityPool = () => {
 							<div className="flex justify-between items-center bg-indigo-900/50 border border-indigo-700/30 rounded-t-lg px-3 py-2">
 								<span className="text-indigo-300 text-sm">Base token</span>
 								<div className="flex items-center gap-2">
-									<button className="text-indigo-400 text-sm hover:text-white transition-colors">50%</button>
+									<button 
+									onClick={handleFiftyPercent}
+									className="text-indigo-400 text-sm hover:text-white transition-colors">
+										50%
+									</button>
 									<button className="text-indigo-400 text-sm hover:text-white transition-colors">Max</button>
 								</div>
 							</div>
@@ -62,9 +81,9 @@ export const LiquidityPool = () => {
 							{/* Token Selection Box */}
 							<details className="w-full">
 								<summary className="w-full bg-indigo-900/50 border border-indigo-700/30 border-t-0 rounded-b-lg p-3 flex items-center justify-between cursor-pointer hover:bg-indigo-900/70 transition-colors">
-									<div className="flex items-center gap-2">
+									<div className="w-full flex items-center gap-2">
 										<button
-											className="w-64 flex items-center gap bg-slate-700 px-4 py-2 rounded-lg hover:bg-slate-600 transition-colors"
+											className="w-52 flex items-center gap bg-slate-700 px-4 py-2 rounded-lg hover:bg-slate-600 transition-colors"
 											onClick={() => setIsModalOpen(true)}
 										>
 											<img src={selectedToken.icon} className="w-6 h-6" alt={selectedToken.symbol} />
@@ -79,6 +98,7 @@ export const LiquidityPool = () => {
 											onChange={handleAmountChange}
 											className="bg-slate-700 px-4 py-2 rounded-lg text-white placeholder-gray-400 hover:bg-slate-600 transition-colors w-full text-right"
 											placeholder="0"
+											disabled={!selectedToken.symbol}
 										/>
 
 										{isModalOpen && (
@@ -99,7 +119,11 @@ export const LiquidityPool = () => {
 							<div className="flex justify-between items-center bg-indigo-900/50 border border-indigo-700/30 rounded-t-lg px-3 py-2">
 								<span className="text-indigo-300 text-sm">Quote token</span>
 								<div className="flex items-center gap-2">
-									<button className="text-indigo-400 text-sm hover:text-white transition-colors">50%</button>
+									<button 
+										onClick={handleQuoteFiftyPercent}
+										className="text-indigo-400 text-sm hover:text-white transition-colors">
+											50%
+									</button>
 									<button className="text-indigo-400 text-sm hover:text-white transition-colors">Max</button>
 								</div>
 							</div>
@@ -107,9 +131,9 @@ export const LiquidityPool = () => {
 							{/* Token Selection Box */}
 							<details className="w-full">
 								<summary className="w-full bg-indigo-900/50 border border-indigo-700/30 border-t-0 rounded-b-lg p-3 flex items-center justify-between cursor-pointer hover:bg-indigo-900/70 transition-colors">
-									<div className="flex items-center gap-2">
+									<div className="w-full flex items-center gap-2">
 										<button
-											className="w-64 flex items-center gap bg-slate-700 px-4 py-2 rounded-lg hover:bg-slate-600 transition-colors"
+											className="w-52 flex items-center gap bg-slate-700 px-4 py-2 rounded-lg hover:bg-slate-600 transition-colors"
 											onClick={() => setIsModalQuoteOpen(true)}
 										>
 											<img src={selectedQuoteToken.icon} className="w-6 h-6" alt={selectedQuoteToken.symbol} />
@@ -168,7 +192,7 @@ export const LiquidityPool = () => {
 					</div>
 				</div>
 
-				<div className="flex flex-col gap-5 mb-10">
+				<div className="w-2/3 flex flex-col gap-5 mb-10">
 					<h1 className="text-2xl font-bold">How To Create a Liquidity Pool</h1>
 					<p className="text-base">Select the token that you just created.</p>
 					<p className="text-base">Enter the amount tokens you would like to include in your liquidity pool. (Recommended 95% or more)</p>
@@ -176,7 +200,7 @@ export const LiquidityPool = () => {
 					<p className="text-base">Enter the amount of SOL you would like to pair with your token. (Recommended 10+ SOL)</p>
 					<p className="text-base">Select your LP fees. This is a small amount of each transaction that goes back to growing your tokens liquidity pool. (Recommended 0.25%)</p>
 					<p className="text-base">Click "Initialize Liquidity Pool" and approve transaction. The cost to create a liquidity pool is 5 SOL.</p>
-					<p className="text-base">In return, you will receive Liquidity pool tokens. To burn liquidity so it shows locked, head to <a href="sol-incinerator.com" className="text-indigo-400 hover:text-indigo-300 transition-colors">sol-incinerator.com</a></p>
+					<p className="text-base">In return, you will receive Liquidity pool tokens. To burn liquidity so it shows locked, head to <a href="https://sol-incinerator.com" target="_blank" className="text-indigo-400 hover:text-indigo-300 transition-colors">sol-incinerator.com</a></p>
 					<p className="text-sm text-indigo-300">Note: The amount of SOL you enter as your starting LP determines the starting price of your token.</p>
 				</div>
 			</div>

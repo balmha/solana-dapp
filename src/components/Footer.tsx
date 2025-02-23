@@ -5,20 +5,9 @@ export const Footer: FC = () => {
     return (
         <div className="flex">
             <footer className="border-t-2 border-[#141414] bg-black hover:text-white w-screen" >
-                <div className="ml-12 py-12 mr-12">
+                <div className="ml-6 py-6 mr-6">
                     <div className="grid grid-cols-2 md:grid-cols-6 gap-2 md:gap-8 md:space-x-12 relative">
                         <div className='flex flex-col col-span-2 mx-4 items-center md:items-start'>
-                            <div className='flex flex-row ml-1'>
-                            <Link href="https://pearwallet.com" target="_blank" rel="noopener noreferrer" passHref className="text-secondary hover:text-white">
-                                <Image
-                                src="/pear-image.webp"
-                                alt="Pear Wallet"
-                                width={60}
-                                height={60}
-                                className="object-contain"
-                                />
-                            </Link>
-                            </div>
                             <div className="flex md:ml-2">
                                 <a href="https://twitter.com/pear_wallet" type="button" className="border-white text-secondary hover:text-white leading-normal hover:bg-black hover:bg-opacity-5 focus:outline-none focus:ring-0 transition duration-150 ease-in-out w-9 h-9 m-1">
                                     <svg aria-hidden="true"
