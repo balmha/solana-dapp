@@ -3,20 +3,16 @@ import { FC } from "react";
 import { SignMessage } from '../../components/SignMessage';
 import { SendTransaction } from '../../components/SendTransaction';
 import { SendVersionedTransaction } from '../../components/SendVersionedTransaction';
+import LiquidityPool from "components/LiquidityPool";
 
-export const BasicsView: FC = ({ }) => {
+export const LiquidityView: FC = ({ }) => {
 
   return (
     <div className="md:hero mx-auto p-4">
       <div className="md:hero-content flex flex-col">
-        <h1 className="text-center text-5xl font-bold text-transparent bg-clip-text text-black mt-10 mb-8">
-          Basics
-        </h1>
         {/* CONTENT GOES HERE */}
         <div className="text-center">
-          <SignMessage />
-          <SendTransaction />
-          <SendVersionedTransaction />
+          <LiquidityPool />
         </div>
       </div>
     </div>

@@ -8,12 +8,13 @@ import { Footer } from '../components/Footer';
 import Notifications from '../components/Notification'
 require('@solana/wallet-adapter-react-ui/styles.css');
 require('../styles/globals.css');
+require('../styles/liquidity.css');
 
 const App: FC<AppProps> = ({ Component, pageProps }) => {
     return (
         <>
           <Head>
-            <title>Solana Scaffold Lite</title>
+            <title>Home Lite</title>
           </Head>
 
           <ContextProvider>
