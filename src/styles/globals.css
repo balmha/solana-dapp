@@ -15,7 +15,7 @@ body {
     rgba(0, 80, 120, 0.6) 50%, /* Bright blue with 60% opacity */
     rgba(80, 0, 150, 0.8) 80%, /* Deep purple-blue with 80% opacity */
     rgba(50, 0, 100, 1) 100% /* Dark purple for contrast */
-);
+  );
 }
 
 a {

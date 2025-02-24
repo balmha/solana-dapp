@@ -2,15 +2,21 @@ import { FC } from 'react';
 import Link from "next/link";
 import Image from "next/image";
 import dynamic from 'next/dynamic';
+import { FaWallet } from "react-icons/fa";
 import React, { useState } from "react";
 import { useAutoConnect } from '../contexts/AutoConnectProvider';
 import NetworkSwitcher from './NetworkSwitcher';
 import NavElement from './nav-element';
 
+const LABELS = {
+  'no-wallet': 'Hola Select Wallet',
+} as const;
+
 const WalletMultiButtonDynamic = dynamic(
   async () => (await import('@solana/wallet-adapter-react-ui')).WalletMultiButton,
-  { ssr: false }
+  { ssr: false}
 );
+
 
 export const AppBar: React.FC = () => {
   const { autoConnect, setAutoConnect } = useAutoConnect();
@@ -18,12 +24,12 @@ export const AppBar: React.FC = () => {
   return (
     <div>
       {/* NavBar / Header */}
-      <div className="navbar flex h-20 flex-row md:mb-2 shadow-lg bg-black text-neutral-content border-b border-zinc-600 bg-opacity-66">
+      <div className="navbar flex h-12 flex-row md:mb-2 shadow-lg bg-black text-neutral-content bg-opacity-30">
         <div className="navbar-start align-items-center">
           <div className="hidden sm:inline w-22 h-22 md:p-2 ml-10">
-          <Link href="https://pearwallet.com" target="_blank" rel="noopener noreferrer" passHref className="text-secondary hover:text-white">
+          <Link href="http://localhost:3000" rel="noopener noreferrer" passHref className="text-secondary hover:text-white">
               <Image
-              src="/pear-image.webp"
+              src="/pear.png"
               alt="Pear Wallet"
               width={60} // Percentage values are not supported, use pixels instead
               height={60}
@@ -31,7 +37,6 @@ export const AppBar: React.FC = () => {
             />
           </Link>
           </div>
-          <WalletMultiButtonDynamic className="btn-ghost btn-sm relative flex md:hidden text-lg " />
         </div>
 
         {/* Nav Links */}
@@ -53,7 +58,7 @@ export const AppBar: React.FC = () => {
             href="/liquiditypool"
             navigationStarts={() => setIsNavOpen(false)}
           />
-          <WalletMultiButtonDynamic className="btn-ghost btn-sm rounded-btn text-lg mr-6 " />
+          <WalletMultiButtonDynamic className="inline-flex items-center justify-center px-4 py-2 min-w-20 h-8 text-sm font-medium bg-teal-500 text-white hover:bg-teal-600 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 transition-colors btn-ghost btn-sm rounded-btn mr-6"></WalletMultiButtonDynamic>
         </div>
           <label
               htmlFor="my-drawer"

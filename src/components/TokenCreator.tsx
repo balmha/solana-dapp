@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import ReactDOM from "react-dom";
 import UploadFile from "./UploadFile";
+import {createToken} from "../utils/createToken";
 
 export const LiquidityPool = () => {
 	const [toggleEnabled, setToggleEnabled] = useState(false);
@@ -80,25 +81,25 @@ export const LiquidityPool = () => {
 						<div className="grid grid-cols-2 gap-4">
 							{/* Token Name Input */}
 							<div className="relative">
-								<div className="flex justify-between items-center bg-indigo-900/50 border border-indigo-700/30 rounded-t-lg px-3 py-2">
+								<div className="flex justify-between items-center bg-indigo-900/50 border border-indigo-700/30 rounded-t-lg px-3 py-1">
 									<span className="text-indigo-300 text-sm">Name</span>
 								</div>
 								<input
 									type="text"
 									placeholder="Enter token name"
-									className="w-full bg-slate-700 px-4 py-2 rounded-b-lg text-white placeholder-gray-400 hover:bg-slate-600 transition-colors"
+									className="w-full bg-slate-700 px-4 py-3 rounded-b-lg text-white placeholder-gray-400 hover:bg-slate-600 transition-colors"
 								/>
 							</div>
 
 							{/* Token Symbol Input */}
 							<div className="relative">
-								<div className="flex justify-between items-center bg-indigo-900/50 border border-indigo-700/30 rounded-t-lg px-3 py-2">
+								<div className="flex justify-between items-center bg-indigo-900/50 border border-indigo-700/30 rounded-t-lg px-3 py-1">
 									<span className="text-indigo-300 text-sm">Symbol</span>
 								</div>
 								<input
 									type="text"
 									placeholder="Enter token symbol"
-									className="w-full bg-slate-700 px-4 py-2 rounded-b-lg text-white placeholder-gray-400 hover:bg-slate-600 transition-colors"
+									className="w-full bg-slate-700 px-4 py-3 rounded-b-lg text-white placeholder-gray-400 hover:bg-slate-600 transition-colors"
 								/>
 							</div>
 						</div>
@@ -107,13 +108,13 @@ export const LiquidityPool = () => {
 						<div className="grid grid-cols-2 gap-4">
 							{/* Decimals Input */}
 							<div className="relative">
-								<div className="flex justify-between items-center bg-indigo-900/50 border border-indigo-700/30 rounded-t-lg px-3 py-2">
+								<div className="flex justify-between items-center bg-indigo-900/50 border border-indigo-700/30 rounded-t-lg px-3 py-1">
 									<span className="text-indigo-300 text-sm">Decimals</span>
 								</div>
 								<input
 									type="number"
 									placeholder="Enter decimals (e.g., 6)"
-									className="w-full bg-slate-700 px-4 py-2 rounded-b-lg text-white placeholder-gray-400 hover:bg-slate-600 transition-colors"
+									className="w-full bg-slate-700 px-4 py-3 rounded-b-lg text-white placeholder-gray-400 hover:bg-slate-600 transition-colors"
 									min="0"
 									max="9"
 								/>
@@ -121,7 +122,7 @@ export const LiquidityPool = () => {
 
 							{/* Total Supply Input */}
 							<div className="relative">
-								<div className="flex justify-between items-center bg-indigo-900/50 border border-indigo-700/30 rounded-t-lg px-3 py-2">
+								<div className="flex justify-between items-center bg-indigo-900/50 border border-indigo-700/30 rounded-t-lg px-3 py-1">
 									<span className="text-indigo-300 text-sm">Supply</span>
 									<div className="flex items-center gap-2">
 										<button
@@ -141,14 +142,14 @@ export const LiquidityPool = () => {
 								<input
 									type="number"
 									placeholder="Enter total supply"
-									className="w-full bg-slate-700 px-4 py-2 rounded-b-lg text-white placeholder-gray-400 hover:bg-slate-600 transition-colors"
+									className="w-full bg-slate-700 px-4 py-3 rounded-b-lg text-white placeholder-gray-400 hover:bg-slate-600 transition-colors"
 								/>
 							</div>
 						</div>
 
 						{/* Token Image Upload (Same Size as Decimals + Supply) */}
 						<div className="relative">
-							<div className="flex justify-between items-center bg-indigo-900/50 border border-indigo-700/30 rounded-t-lg px-3 py-2">
+							<div className="flex justify-between items-center bg-indigo-900/50 border border-indigo-700/30 rounded-t-lg px-3 py-1">
 								<span className="text-indigo-300 text-sm">Image</span>
 							</div>
 							<div className="w-full bg-slate-700 px-4 py-2 rounded-b-lg text-white placeholder-gray-400 hover:bg-slate-600 transition-colors">
@@ -160,7 +161,7 @@ export const LiquidityPool = () => {
 
 						{/* Description Textarea */}
 						<div className="relative">
-							<div className="flex justify-between items-center bg-indigo-900/50 border border-indigo-700/30 rounded-t-lg px-3 py-2">
+							<div className="flex justify-between items-center bg-indigo-900/50 border border-indigo-700/30 rounded-t-lg px-3 py-1">
 								<span className="text-indigo-300 text-sm">Description</span>
 							</div>
 							<textarea
@@ -275,9 +276,9 @@ export const LiquidityPool = () => {
 					<p className="text-base">2. Specify the desired name for your Token</p>
 					<p className="text-base">3. Indicate the symbol (max 8 characters).</p>
 					<p className="text-base">4. Select the decimals quantity (default recommended 6 for all tokens)</p>
-					<p className="text-base">5. Provide a brief description for your SPL Token.</p>
+					<p className="text-base">5. Determine the Supply of your Token.</p>
 					<p className="text-base">6. Upload the image for your token (PNG).</p>
-					<p className="text-base">7. Determine the Supply of your Token.</p>
+					<p className="text-base">7. Provide a brief description for your SPL Token.</p>
 					<p className="text-base">8. Click on create, accept the transaction and wait until your tokens ready.</p>
 					<p className="text-base">The cost of Token creation is 0.3 SOL, covering all fees for SPL Token Creation.</p><br></br>
 					<h2 className="text-xl font-bold">Revoke Freeze Authority:</h2>

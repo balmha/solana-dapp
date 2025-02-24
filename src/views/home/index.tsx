@@ -35,14 +35,14 @@ export const HomeView: FC = ({ }) => {
     <div className="md:hero mx-auto p-4">
       <div className="md:hero-content flex flex-col">
         <div className='mt-6'>
-        <div className='text-sm font-normal align-bottom text-right text-black mt-4'>v{pkg.version}</div>
-        <h1 className="text-center text-5xl md:pl-12 font-bold bg-clip-text text-black mb-4">
+        <div className='text-sm font-normal align-bottom text-right text-white mt-4'>v{pkg.version}</div>
+        <h1 className="text-center text-5xl md:pl-12 font-bold bg-clip-text text-white mb-4">
           Pear Tools
         </h1>
         </div>
         <h4 className="md:w-full text-2x1 md:text-4xl text-center text-slate-300 my-2">
-          <p className='text-slate-900 font-semibold'>Create and Manage Tokens on Solana.</p><br></br>
-          <p className='text-slate-900 text-2x1 leading-relaxed'>Easily create SPL tokens and liquidity pools with Pear Tools.</p>
+          <p className='text-slate-300 font-semibold'>Create and Manage Tokens on Solana.</p><br></br>
+          <p className='text-slate-300 text-2x1 leading-relaxed'>Easily create SPL tokens and liquidity pools with Pear Tools.</p>
         </h4>
         <br></br>
         <div className="space-x-4">
