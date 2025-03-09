@@ -2,15 +2,10 @@ import { FC } from 'react';
 import Link from "next/link";
 import Image from "next/image";
 import dynamic from 'next/dynamic';
-import { FaWallet } from "react-icons/fa";
 import React, { useState } from "react";
 import { useAutoConnect } from '../contexts/AutoConnectProvider';
 import NetworkSwitcher from './NetworkSwitcher';
 import NavElement from './nav-element';
-
-const LABELS = {
-  'no-wallet': 'Hola Select Wallet',
-} as const;
 
 const WalletMultiButtonDynamic = dynamic(
   async () => (await import('@solana/wallet-adapter-react-ui')).WalletMultiButton,

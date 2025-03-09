@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 
-const UploadFile = () => {
+interface UploadFileProps {
+  onFileUpload: (url: string) => void; // Callback to pass the uploaded image URL
+}
+
+const UploadFile: React.FC<UploadFileProps> = ({ onFileUpload }) => {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -9,14 +13,16 @@ const UploadFile = () => {
       // Generate a preview URL for the uploaded image
       const reader = new FileReader();
       reader.onloadend = () => {
-        setImagePreview(reader.result as string);
+        const imageUrl = reader.result as string;
+        setImagePreview(imageUrl);
+        onFileUpload(imageUrl); // Pass the image URL to the parent component
       };
       reader.readAsDataURL(file);
     }
   };
 
   return (
-    <label htmlFor="file-input" className="btn-default" flow-btn>
+    <label htmlFor="file-input" className="btn-default">
       {imagePreview ? (
         // Display the uploaded image as a thumbnail
         <img
