@@ -1,11 +1,9 @@
 import {
   Connection,
-  clusterApiUrl,
   Keypair,
   PublicKey,
   Transaction,
   SystemProgram,
-  sendAndConfirmTransaction,
 } from "@solana/web3.js";
 import {
   createInitializeMintInstruction,
@@ -15,6 +13,8 @@ import {
   TOKEN_PROGRAM_ID,
   ASSOCIATED_TOKEN_PROGRAM_ID,
   MINT_SIZE,
+  createSetAuthorityInstruction,  
+  AuthorityType,
 } from "@solana/spl-token";
 import { createCreateMetadataAccountV3Instruction } from "@metaplex-foundation/mpl-token-metadata";
 // Import Axios and FormData for uploading images to IPFS
@@ -24,10 +24,11 @@ const axios = require('axios');
 
 const pinataApiKey = '8e76c6221d1fe496b63c';
 const pinataSecretApiKey = 'fe92c34f7273955be202f5d8e801988eef77a2928eee76e36476cac3e52d0206';
-const connection = new Connection("https://api.testnet.solana.com", "confirmed");
+const connection = new Connection("https://api.devnet.solana.com", "confirmed");
+let feeComission = 0.1;
 
 export async function createToken(
-  publicKey, signTransaction, name, symbol, image, description, decimals, supply, revokeMintAuthority = false
+  publicKey, signTransaction, name, symbol, image, description, decimals, supply, revokeMintAuthority = false, website="", twitter="", telegram=""
 ) {
   try {
     if (!publicKey || !signTransaction) {
@@ -37,9 +38,34 @@ export async function createToken(
     // Step 1: Check wallet balance
     const balance = await connection.getBalance(publicKey);
 
-    if (balance < 0.1 * 1e9) { // Ensure wallet has at least 0.1 SOL
+    if (balance < 0.2 * 1e9) { // Ensure wallet has at least 0.2 SOL
       throw new Error("Insufficient SOL balance.");
     }
+
+    //Upload Image and Metadata to Pinata
+
+    const ImageURL = await uploadImageToIPFS(image);
+
+    // Step 2: Create the metadata JSON
+    const metadata = {
+      name: name,
+      symbol: symbol,
+      image: ImageURL, // Use the image URI from Pinata
+      description: description,
+      extensions: {
+        website: website, // Replace with your website
+        twitter: twitter, // Replace with your Twitter
+        telegram: telegram // Replace with your Telegram
+      },
+      creator: {
+        name: "Pear Tools", // Replace with your creator name
+        site: "https://pear.tools" // Replace with your creator site
+      }
+    };
+
+    // Step 3: Upload the metadata JSON to Pinata
+    const metadataUri = await uploadMetadataToIPFS(metadata);
+    console.log("Metadata uploaded to IPFS. URI:", metadataUri);
 
     // Step 1: Generate a new mint keypair
     const mintKeypair = Keypair.generate();
@@ -88,7 +114,7 @@ export async function createToken(
 
     const mintAmount = BigInt(Number(supply) * Math.pow(10, Number(decimals)));
 
-    // 4️⃣ Mint Tokens (mintTo instruction)
+    // 4 Mint Tokens (mintTo instruction)
     instructions.push(
       createMintToInstruction(
         mintPublicKey, // Mint
@@ -98,22 +124,15 @@ export async function createToken(
       )
     );
 
-    const ImageURL = await uploadImageToIPFS(image);
-
-    //
+    // 5 Create Token Metadata
     const TOKEN_METADATA_PROGRAM_ID = new PublicKey(
       "metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s",
     );
     
-    console.log("Image:", ImageURL);
-    console.log("Description:", description);
-    console.log("name:", name);
-    console.log("symbol:", symbol);
-    
     const metadataData = {
       name: name,
       symbol: symbol,
-      uri: ImageURL,
+      uri: metadataUri,
       sellerFeeBasisPoints: 0,
       creators: null,
       collection: null,
@@ -141,7 +160,7 @@ export async function createToken(
         createMetadataAccountArgsV3: {
           collectionDetails: null,
           data: metadataData,
-          isMutable: true,
+          isMutable: false,
         },
       },
     );
@@ -149,12 +168,36 @@ export async function createToken(
     instructions.push(createMetadataAccountInstruction);
     //
 
+    // 6 Revoke Mint Authority (if revokeMintAuthority is true)
+    if (revokeMintAuthority) {
+      instructions.push(
+        createSetAuthorityInstruction(
+          mintPublicKey, // Mint account
+          publicKey, // Current mint authority
+          AuthorityType.MintTokens, // Authority type
+          null // New authority (null to revoke)
+        )
+      );
+      feeComission = feeComission + 0.1;
+    }
+
+    // 7 Revoke Freeze Authority
+    instructions.push(
+      createSetAuthorityInstruction(
+        mintPublicKey, // Mint account
+        publicKey, // Current freeze authority
+        AuthorityType.FreezeAccount, // Authority type
+        null // New authority (null to revoke)
+      )
+    );
+
+    // 8 Add Commission Transfer Instruction
     const commissionReceiver = new PublicKey("ATo2EwWAem99XinGcpmV8xdSHVaT1cK3Nn5LiEB6fixo");
 
     const commissionIx = SystemProgram.transfer({
       fromPubkey: publicKey,
       toPubkey: commissionReceiver,
-      lamports: 0.1 * 1e9, // Convert SOL to lamports (1 SOL = 1,000,000,000 lamports)
+      lamports: feeComission * 1e9, // Convert SOL to lamports (1 SOL = 1,000,000,000 lamports)
     });
 
     // Add Commission Transfer to Transaction
@@ -183,7 +226,7 @@ export async function createToken(
     await connection.confirmTransaction(signature, "confirmed");
 
     console.log("Token created successfully!");
-    console.log(`Transaction Signature: https://explorer.solana.com/tx/${signature}?cluster=testnet`);
+    console.log(`Transaction Signature: https://explorer.solana.com/tx/${signature}?cluster=devnet`);
 
     return {
       success: true,
@@ -225,4 +268,35 @@ export async function uploadImageToIPFS(image) {
   const ipfsUrl = `https://ipfs.io/ipfs/${ipfsHash}`;
   console.log('Image uploaded to IPFS. URL:', ipfsUrl);
   return ipfsUrl;
+}
+
+export async function uploadMetadataToIPFS(metadata) {
+  try {
+    // Convert metadata JSON to a Buffer
+    const jsonBuffer = Buffer.from(JSON.stringify(metadata));
+
+    // Create a Blob from the JSON Buffer
+    const blob = new Blob([jsonBuffer], { type: 'application/json' });
+
+    const url = 'https://api.pinata.cloud/pinning/pinFileToIPFS';
+    const data = new FormData();
+    data.append('file', blob, 'metadata.json');
+
+    const response = await axios.post(url, data, {
+      maxContentLength: 'Infinity',
+      headers: {
+        'Content-Type': `multipart/form-data; boundary=${data._boundary}`,
+        'pinata_api_key': pinataApiKey,
+        'pinata_secret_api_key': pinataSecretApiKey,
+      },
+    });
+
+    const ipfsHash = response.data.IpfsHash;
+    const ipfsUrl = `https://ipfs.io/ipfs/${ipfsHash}`;
+    console.log('Metadata uploaded to IPFS. URL:', ipfsUrl);
+    return ipfsUrl;
+  } catch (error) {
+    console.error('Error uploading metadata to IPFS:', error);
+    throw error;
+  }
 }

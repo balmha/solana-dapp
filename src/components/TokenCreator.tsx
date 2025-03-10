@@ -16,6 +16,9 @@ export const TokenCreator = () => {
   const [tokenSupply, setTokenSupply] = useState("");
   const [tokenImage, setTokenImage] = useState(""); // Store the uploaded image URL
   const [tokenDescription, setTokenDescription] = useState("");
+  const [tokenWebsite, setTokenWebsite] = useState("");
+  const [tokenTwitter, setTokenTwitter] = useState("");
+  const [tokenTelegram, setTokenTelegram] = useState("");
 
   // Handle 50% button click
   const handleFiftyPercent = () => {
@@ -33,8 +36,8 @@ export const TokenCreator = () => {
     }
 
     // Validate form inputs
-    if (!tokenName || !tokenSymbol || !tokenDecimals || !tokenSupply || !tokenImage || !tokenDescription) {
-      alert("Please fill out all fields");
+    if (!tokenName || !tokenSymbol || !tokenDecimals || !tokenSupply) {
+      alert("Please fill out all required fields");
       return;
     }
 
@@ -48,7 +51,10 @@ export const TokenCreator = () => {
       tokenDescription,
       tokenDecimals,
       parseFloat(tokenSupply),
-      toggleEnabled // Revoke Mint Authority
+      toggleEnabled, // Revoke Mint Authority
+      tokenWebsite,
+      tokenTwitter,
+      tokenTelegram
     );
 
     // Handle the result
@@ -203,7 +209,7 @@ export const TokenCreator = () => {
                   </div>
                 )}
               </div>
-              <div className="text-indigo-400 text-sm">(0.1 SOL)</div>
+              {/* <div className="text-indigo-400 text-sm">(0.1 SOL)</div> */}
             </div>
 
             {/* Revoke Mint Authority (Optional) */}
@@ -263,7 +269,7 @@ export const TokenCreator = () => {
         {/* Right Side Content */}
         <div className="w-2/3 flex flex-col gap-5 mb-10">
           <h1 className="text-xl font-bold">Create Solana Token</h1>
-          <p className="text-base">Effortlessly create your Solana SPL Token with our 7+1 step process – no coding required.</p>
+          <p className="text-base">Effortlessly create your Solana SPL Token with our simple process – no coding required.</p>
           <p className="text-base">Customize your Solana Token exactly the way you envision it. Less than 5 minutes, at an affordable cost.</p>
           <br></br>
           <h2 className="text-xl font-bold">How to use Solana Token Creator</h2>
@@ -272,13 +278,13 @@ export const TokenCreator = () => {
           <p className="text-base">3. Indicate the symbol (max 8 characters).</p>
           <p className="text-base">4. Select the decimals quantity (default recommended 6 for all tokens)</p>
           <p className="text-base">5. Determine the Supply of your Token.</p>
-          <p className="text-base">6. Upload the image for your token (PNG).</p>
-          <p className="text-base">7. Provide a brief description for your SPL Token.</p>
+          <p className="text-base">6. Upload the image for your token (PNG). - Optional</p>
+          <p className="text-base">7. Provide a brief description for your SPL Token. - Optional</p>
           <p className="text-base">8. Click on create, accept the transaction and wait until your tokens ready.</p>
-          <p className="text-base">The cost of Token creation is 0.3 SOL, covering all fees for SPL Token Creation.</p>
+          <p className="text-base">The Pear Tool's fee for Token creation is 0.1 SOL, not covering fees for SPL Token Creation.</p>
           <br></br>
           <h2 className="text-xl font-bold">Revoke Freeze Authority:</h2>
-          <p className="text-base text-indigo-300">If you want to create a liquidity pool you will need to "Revoke Freeze Authority" of the Token, you can do that here. The cost is 0.1 SOL.</p>
+          <p className="text-base text-indigo-300">If you want to create a liquidity pool you will need to "Revoke Freeze Authority" of the Token - Required.</p>
           <h2 className="text-xl font-bold">Revoke Mint Authority:</h2>
           <p className="text-base text-indigo-300">Revoking mint authority ensures that there can be no more tokens minted than the total supply. This provides security and peace of mind to buyers. The cost is 0.1 SOL</p>
           <br></br>
