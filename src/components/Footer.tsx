@@ -10,7 +10,7 @@ export const Footer: FC = () => {
                             <div className="flex items-center space-x-3">
                                 <a 
                                     href="https://twitter.com/splforge" 
-                                    target="_blank" 
+                                    target="_blank" rel="noreferrer"
                                     className="flex items-center justify-center w-8 h-8 rounded-full transition duration-150 ease-in-out hover:text-white hover:bg-opacity-10"
                                 >
                                     <svg 

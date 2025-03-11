@@ -271,10 +271,10 @@ export const TokenCreator = () => {
           <p className="text-base">6. Upload the image for your token (PNG). - Optional</p>
           <p className="text-base">7. Provide a brief description for your SPL Token. - Optional</p>
           <p className="text-base">8. Click on create, accept the transaction and wait until your tokens ready.</p>
-          <p className="text-base">The Pear Tool's fee for Token creation is 0.1 SOL, not covering fees for SPL Token Creation.</p>
+          <p className="text-base">The Pear Tool&lsquo;s fee for Token creation is 0.1 SOL, not covering fees for SPL Token Creation.</p>
           <br></br>
           <h2 className="text-xl font-bold">Revoke Freeze Authority:</h2>
-          <p className="text-base text-indigo-300">If you want to create a liquidity pool you will need to "Revoke Freeze Authority" of the Token - Required.</p>
+          <p className="text-base text-indigo-300">If you want to create a liquidity pool you will need to &lsquo;Revoke Freeze Authority&rsquo; of the Token - Required.</p>
           <h2 className="text-xl font-bold">Revoke Mint Authority:</h2>
           <p className="text-base text-indigo-300">Revoking mint authority ensures that there can be no more tokens minted than the total supply. This provides security and peace of mind to buyers. The cost is 0.1 SOL</p>
           <br></br>

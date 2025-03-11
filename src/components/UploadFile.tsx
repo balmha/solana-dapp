@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Image from 'next/image';
 
 interface UploadFileProps {
   onFileUpload: (url: string) => void; // Callback to pass the uploaded image URL
@@ -25,10 +26,12 @@ const UploadFile: React.FC<UploadFileProps> = ({ onFileUpload }) => {
     <label htmlFor="file-input" className="btn-default">
       {imagePreview ? (
         // Display the uploaded image as a thumbnail
-        <img
+        <Image
           src={imagePreview}
           alt="Uploaded thumbnail"
-          className="max-w-24 max-h-24 object-cover"
+          className="object-cover"
+          width={100}
+          height={100}
         />
       ) : (
         // Display the upload icon if no image is uploaded

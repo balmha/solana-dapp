@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import ReactDOM from "react-dom";
+import Image from 'next/image';
 
 export const LiquidityPool = () => {
 	const [isModalOpen, setIsModalOpen] = useState(false);
@@ -86,7 +87,7 @@ export const LiquidityPool = () => {
 											className="w-52 flex items-center gap bg-slate-700 px-4 py-2 rounded-lg hover:bg-slate-600 transition-colors"
 											onClick={() => setIsModalOpen(true)}
 										>
-											<img src={selectedToken.icon} className="w-6 h-6" alt={selectedToken.symbol} />
+											<Image src={selectedToken.icon} className="w-6 h-6" alt={selectedToken.symbol} width={100} height={100}/>
 											<span className="text-white">&nbsp; {selectedToken.symbol}</span>
 											<span className="material-symbols-outlined text-indigo-300">expand_more</span>
 										</button>
@@ -136,7 +137,7 @@ export const LiquidityPool = () => {
 											className="w-52 flex items-center gap bg-slate-700 px-4 py-2 rounded-lg hover:bg-slate-600 transition-colors"
 											onClick={() => setIsModalQuoteOpen(true)}
 										>
-											<img src={selectedQuoteToken.icon} className="w-6 h-6" alt={selectedQuoteToken.symbol} />
+											<Image src={selectedQuoteToken.icon} className="w-6 h-6" alt={selectedQuoteToken.symbol} width={100} height={100}/>
 											<span className="text-white">&nbsp; {selectedQuoteToken.symbol}</span>
 											<span className="material-symbols-outlined text-indigo-300">expand_more</span>
 										</button>
@@ -199,8 +200,8 @@ export const LiquidityPool = () => {
 					<p className="text-base">Select a base token, SOL is recommended.</p>
 					<p className="text-base">Enter the amount of SOL you would like to pair with your token. (Recommended 10+ SOL)</p>
 					<p className="text-base">Select your LP fees. This is a small amount of each transaction that goes back to growing your tokens liquidity pool. (Recommended 0.25%)</p>
-					<p className="text-base">Click "Initialize Liquidity Pool" and approve transaction. The cost to create a liquidity pool is 5 SOL.</p>
-					<p className="text-base">In return, you will receive Liquidity pool tokens. To burn liquidity so it shows locked, head to <a href="https://sol-incinerator.com" target="_blank" className="text-indigo-400 hover:text-indigo-300 transition-colors">sol-incinerator.com</a></p>
+					<p className="text-base">Click &lsquo;Initialize Liquidity Pool&rsquo; and approve transaction. The cost to create a liquidity pool is 5 SOL.</p>
+					<p className="text-base">In return, you will receive Liquidity pool tokens. To burn liquidity so it shows locked, head to <a href="https://sol-incinerator.com" target="_blank" rel="noreferrer" className="text-indigo-400 hover:text-indigo-300 transition-colors">sol-incinerator.com</a></p>
 					<p className="text-sm text-indigo-300">Note: The amount of SOL you enter as your starting LP determines the starting price of your token.</p>
 				</div>
 			</div>
@@ -239,10 +240,12 @@ export const LiquidityTokenSelec = ({ onClose, onSelectToken }) => {
 							}
 							className="flex items-center gap-2 bg-slate-700 px-4 py-2 rounded-lg hover:bg-slate-600 transition-colors"
 						>
-							<img
+							<Image
 								src="https://cryptologos.cc/logos/solana-sol-logo.png"
 								className="w-5 h-5"
 								alt="SOL"
+								width={100}
+								height={100}
 							/>
 							SOL
 						</button>
@@ -255,10 +258,12 @@ export const LiquidityTokenSelec = ({ onClose, onSelectToken }) => {
 							}
 							className="flex items-center gap-2 bg-slate-700 px-4 py-2 rounded-lg hover:bg-slate-600 transition-colors"
 						>
-							<img
+							<Image
 								src="https://assets.coingecko.com/coins/images/6319/thumb/USD_Coin_icon.png"
 								className="w-5 h-5"
 								alt="USDC"
+								width={100}
+								height={100}
 							/>
 							USDC
 						</button>
@@ -271,10 +276,12 @@ export const LiquidityTokenSelec = ({ onClose, onSelectToken }) => {
 							}
 							className="flex items-center gap-2 bg-slate-700 px-4 py-2 rounded-lg hover:bg-slate-600 transition-colors"
 						>
-							<img
+							<Image
 								src="https://assets.coingecko.com/coins/images/325/thumb/Tether.png"
 								className="w-5 h-5"
 								alt="USDT"
+								width={100}
+								height={100}
 							/>
 							USDT
 						</button>

@@ -11,6 +11,14 @@ const Home: NextPage = (props) => {
           name="description"
           content="Home"
         />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap"
+          rel="stylesheet"
+        />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Source+Sans+3&display=swap"
+          rel="stylesheet"
+        />
       </Head>
       <HomeView />
     </div>
