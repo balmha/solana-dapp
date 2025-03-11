@@ -1,13 +1,9 @@
 // Next, React
-import { FC, useEffect, useState, useCallback } from 'react';
+import { FC, useEffect} from 'react';
 import Link from 'next/link';
-
 // Wallet
 import { useWallet, useConnection } from '@solana/wallet-adapter-react';
-import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
-
 import pkg from '../../../package.json';
-
 // Store
 import useUserSOLBalanceStore from '../../stores/useUserSOLBalanceStore';
 
@@ -31,18 +27,18 @@ export const HomeView: FC = ({ }) => {
   }, [wallet.publicKey, connection, getUserSOLBalance])
 
   return (
-
-    <div className="md:hero mx-auto p-4">
+    <div className="md:hero mx-auto p-4 md:p-36 flex flex-col md:flex-row justify-center items-center">
       <div className="md:hero-content flex flex-col">
         <div className='mt-6'>
         <div className='text-sm font-normal align-bottom text-right text-white mt-4'>v{pkg.version}</div>
-        <h1 className="text-center text-5xl md:pl-12 font-bold bg-clip-text text-white mb-4">
-          Pear Tools
+        <h1 className="audiowide-text text-center text-5xl md:pl-12 font-bold bg-clip-text text-white mb-4">
+          SPLForge
         </h1>
+        
         </div>
         <h4 className="md:w-full text-2x1 md:text-4xl text-center text-slate-300 my-2">
-          <p className='text-slate-300 font-semibold'>Create and Manage Tokens on Solana.</p><br></br>
-          <p className='text-slate-300 text-2x1 leading-relaxed'>Easily create SPL tokens and liquidity pools with Pear Tools.</p>
+          <p className='sourcesans-text text-slate-300 font-semibold'>Create and Manage Tokens on Solana.</p><br></br>
+          <p className='sourcesans-text text-slate-300 text-2x1 leading-relaxed'>Easily create SPL tokens and liquidity pools with SPLForge.</p>
         </h4>
         <br></br>
         <div className="space-x-4">
@@ -59,21 +55,6 @@ export const HomeView: FC = ({ }) => {
             Create Pool
           </Link>
         </div>
-        {/* <div className="flex flex-col mt-2">
-          <div className="flex flex-row justify-center">
-                  <div className="relative group items-center">
-                      <div className="m-1 absolute -inset-0.5 rounded-lg blur opacity-20 group-hover:opacity-100 transition duration-1000 group-hover:duration-200"></div>
-              
-                          <button
-                              className="px-8 m-2 btn animate-pulse bg-gradient-to-br from-green-500 to-yellow-500 hover:from-white hover:to-purple-300 text-black"
-                              onClick={downloadApp}
-                              >
-                                  <span>Download Wallet App</span>
-                  
-                          </button>
-                  </div>
-          </div>
-        </div> */}
       </div>
     </div>
   );

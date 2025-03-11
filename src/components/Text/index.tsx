@@ -26,7 +26,7 @@ type TextProps = {
 const variants = {
     heading: 'text-3xl font-medium',
     'sub-heading': 'text-2xl font-medium',
-    'nav-heading': 'text-lg font-medium sm:text-xl',
+    'nav-heading': 'text-lg font-medium sm:text-sm',
     nav: 'font-medium',
     paragraph: 'text-lg',
     'sub-paragraph': 'text-base font-medium text-inherit',

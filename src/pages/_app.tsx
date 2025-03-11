@@ -5,26 +5,26 @@ import { ContextProvider } from '../contexts/ContextProvider';
 import { AppBar } from '../components/AppBar';
 import { ContentContainer } from '../components/ContentContainer';
 import { Footer } from '../components/Footer';
-import Notifications from '../components/Notification'
+import Notifications from '../components/Notification';
 require('@solana/wallet-adapter-react-ui/styles.css');
 require('../styles/globals.css');
 require('../styles/liquidity.css');
+
 
 const App: FC<AppProps> = ({ Component, pageProps }) => {
     return (
         <>
           <Head>
-            <title>Home Lite</title>
+            <title>SPLForge</title>
           </Head>
-
           <ContextProvider>
             <div className="flex flex-col h-screen">
-              <Notifications />
+              <Notifications/>
               <AppBar/>
               <ContentContainer>
                 <Component {...pageProps} />
-                <Footer/>
               </ContentContainer>
+              <Footer/>
             </div>
           </ContextProvider>
         </>

@@ -16,9 +16,6 @@ export const TokenCreator = () => {
   const [tokenSupply, setTokenSupply] = useState("");
   const [tokenImage, setTokenImage] = useState(""); // Store the uploaded image URL
   const [tokenDescription, setTokenDescription] = useState("");
-  const [tokenWebsite, setTokenWebsite] = useState("");
-  const [tokenTwitter, setTokenTwitter] = useState("");
-  const [tokenTelegram, setTokenTelegram] = useState("");
 
   // Handle 50% button click
   const handleFiftyPercent = () => {
@@ -51,10 +48,7 @@ export const TokenCreator = () => {
       tokenDescription,
       tokenDecimals,
       parseFloat(tokenSupply),
-      toggleEnabled, // Revoke Mint Authority
-      tokenWebsite,
-      tokenTwitter,
-      tokenTelegram
+      toggleEnabled // Revoke Mint Authority
     );
 
     // Handle the result
@@ -67,8 +61,9 @@ export const TokenCreator = () => {
 
   return (
     <div id="webcrumbs">
-      <div className="bg-gradient-to-br from-indigo-950 via-purple-900 to-indigo-950 p-8 rounded-xl flex gap-8">
-        <div className="w-1/2 bg-indigo-950/50 backdrop-blur-sm p-6 rounded-xl border border-indigo-800/30">
+      <div className="bg-gradient-to-br from-indigo-950 via-purple-900 to-indigo-950 p-6 md:p-8 rounded-xl flex flex-col lg:flex-row gap-6">
+        {/* Left Side: Form */}
+        <div className="w-full lg:w-1/2 bg-indigo-950/50 backdrop-blur-sm p-6 rounded-xl border border-indigo-800/30">
           <div className="flex flex-col gap-5">
             <h1 className="text-3xl font-bold">Solana Token Creator</h1>
             <p className="text-base">
@@ -76,12 +71,11 @@ export const TokenCreator = () => {
               <br />
               Simple, user friendly, and fast.
             </p>
-            <br />
           </div>
-          <div className="space-y-6">
+
+          <div className="space-y-6 mt-6">
             {/* Name and Symbol Inputs */}
-            <div className="grid grid-cols-2 gap-4">
-              {/* Token Name Input */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="relative">
                 <div className="flex justify-between items-center bg-indigo-900/50 border border-indigo-700/30 rounded-t-lg px-3 py-1">
                   <span className="text-indigo-300 text-sm">Name</span>
@@ -95,7 +89,6 @@ export const TokenCreator = () => {
                 />
               </div>
 
-              {/* Token Symbol Input */}
               <div className="relative">
                 <div className="flex justify-between items-center bg-indigo-900/50 border border-indigo-700/30 rounded-t-lg px-3 py-1">
                   <span className="text-indigo-300 text-sm">Symbol</span>
@@ -111,8 +104,7 @@ export const TokenCreator = () => {
             </div>
 
             {/* Decimals and Supply Inputs */}
-            <div className="grid grid-cols-2 gap-4">
-              {/* Decimals Input */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="relative">
                 <div className="flex justify-between items-center bg-indigo-900/50 border border-indigo-700/30 rounded-t-lg px-3 py-1">
                   <span className="text-indigo-300 text-sm">Decimals</span>
@@ -128,7 +120,6 @@ export const TokenCreator = () => {
                 />
               </div>
 
-              {/* Total Supply Input */}
               <div className="relative">
                 <div className="flex justify-between items-center bg-indigo-900/50 border border-indigo-700/30 rounded-t-lg px-3 py-1">
                   <span className="text-indigo-300 text-sm">Supply</span>
@@ -140,7 +131,7 @@ export const TokenCreator = () => {
                       50%
                     </button>
                     <button
-                      onClick={() => setTokenSupply("21000000")} // Example: Set max supply
+                      onClick={() => setTokenSupply("21000000")}
                       className="text-indigo-400 text-sm hover:text-white transition-colors"
                     >
                       Max
@@ -183,7 +174,7 @@ export const TokenCreator = () => {
               />
             </div>
 
-            {/* Revoke Freeze Authority (Required) */}
+            {/* Revoke Freeze Authority */}
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <span className="text-indigo-300 text-sm">Revoke Freeze Authority (Required)</span>
@@ -209,10 +200,9 @@ export const TokenCreator = () => {
                   </div>
                 )}
               </div>
-              {/* <div className="text-indigo-400 text-sm">(0.1 SOL)</div> */}
             </div>
 
-            {/* Revoke Mint Authority (Optional) */}
+            {/* Revoke Mint Authority */}
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <span className="text-indigo-300 text-sm">Revoke Mint Authority</span>
@@ -246,7 +236,7 @@ export const TokenCreator = () => {
                   onClick={() => setToggleEnabled(!toggleEnabled)}
                 >
                   <div
-                    className={`w-4 h-4 bg-white rounded-full shadow-sm transform transition-transform peer-checked:translate-x-4 ${
+                    className={`w-4 h-4 bg-white rounded-full shadow-sm transform transition-transform ${
                       toggleEnabled ? "translate-x-6" : "translate-x-0"
                     }`}
                   />
@@ -266,8 +256,8 @@ export const TokenCreator = () => {
           </div>
         </div>
 
-        {/* Right Side Content */}
-        <div className="w-2/3 flex flex-col gap-5 mb-10">
+        {/* Right Side: Instructions */}
+        <div className="w-full lg:w-1/2 flex flex-col gap-5">
           <h1 className="text-xl font-bold">Create Solana Token</h1>
           <p className="text-base">Effortlessly create your Solana SPL Token with our simple process – no coding required.</p>
           <p className="text-base">Customize your Solana Token exactly the way you envision it. Less than 5 minutes, at an affordable cost.</p>

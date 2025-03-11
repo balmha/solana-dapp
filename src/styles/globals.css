@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Audiowide&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+3&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -16,7 +18,13 @@ body {
     rgba(80, 0, 150, 0.8) 80%, /* Deep purple-blue with 80% opacity */
     rgba(50, 0, 100, 1) 100% /* Dark purple for contrast */
   );
-}
+  .audiowide-text {
+    font-family: 'Audiowide', sans-serif;
+  };
+  .sourcesans-text {
+    font-family: 'Source Sans 3', sans-serif;
+  }
+};
 
 a {
   color: inherit;
