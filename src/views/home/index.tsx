@@ -11,20 +11,14 @@ export const HomeView: FC = ({ }) => {
   const wallet = useWallet();
   const { connection } = useConnection();
 
-  const balance = useUserSOLBalanceStore((s) => s.balance)
+  /* const balance = useUserSOLBalanceStore((s) => s.balance)
   const { getUserSOLBalance } = useUserSOLBalanceStore()
-
-  //Create a function called downloadApp which downloads a wallet app from the remote server https://peerwallet.com
-  const downloadApp = () => {
-    window.location.href = 'https://pearwallet.com'
-  }
-
+  
   useEffect(() => {
     if (wallet.publicKey) {
-      console.log(wallet.publicKey.toBase58())
       getUserSOLBalance(wallet.publicKey, connection)
     }
-  }, [wallet.publicKey, connection, getUserSOLBalance])
+  }, [wallet.publicKey, connection, getUserSOLBalance]) */
 
   return (
     <div className="md:hero mx-auto p-4 md:p-36 flex flex-col md:flex-row justify-center items-center">

@@ -1,12 +1,20 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from 'next/image';
 
 interface UploadFileProps {
   onFileUpload: (url: string) => void; // Callback to pass the uploaded image URL
+  resetImage?: boolean; // Prop to trigger image reset
 }
 
-const UploadFile: React.FC<UploadFileProps> = ({ onFileUpload }) => {
+const UploadFile: React.FC<UploadFileProps> = ({ onFileUpload, resetImage }) => {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+
+  // Reset the image preview when `resetImage` changes
+  useEffect(() => {
+    if (resetImage) {
+      setImagePreview(null);
+    }
+  }, [resetImage]);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];

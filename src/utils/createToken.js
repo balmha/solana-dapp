@@ -17,23 +17,60 @@ import {
   AuthorityType,
 } from "@solana/spl-token";
 import { createCreateMetadataAccountV3Instruction } from "@metaplex-foundation/mpl-token-metadata";
-// Import Axios and FormData for uploading images to IPFS
 
-// Connect to your local testnet
+// Import Axios for uploading images to IPFS
 const axios = require('axios');
-
 const pinataApiKey = '8e76c6221d1fe496b63c';
 const pinataSecretApiKey = 'fe92c34f7273955be202f5d8e801988eef77a2928eee76e36476cac3e52d0206';
-const connection = new Connection("https://api.devnet.solana.com", "confirmed");
+
+// Define a function to get the RPC endpoint based on the network configuration
+const getRpcEndpoint = (networkConfiguration) => {
+  switch (networkConfiguration) {
+    case "mainnet-beta":
+      // Primary: Chainstack
+      // Backup: Alchemy
+      return [
+        "https://solana-mainnet.core.chainstack.com/0df3ddbd0eeccaaced87f4e4f3c6bf35",
+        "https://solana-mainnet.g.alchemy.com/v2/aHxeF9vSRD-LM4AZDhrEMImoiFibupoj",
+      ];
+    case "devnet":
+      return ["https://api.devnet.solana.com"];
+    case "testnet":
+      return ["https://api.testnet.solana.com"];
+    default:
+      throw new Error(`Unknown network: ${networkConfiguration}`);
+  }
+};
+
+// Example function to demonstrate dynamic connection usage
+const createConnection = async (networkConfiguration) => {
+  const endpoints = getRpcEndpoint(networkConfiguration); // Always returns an array
+
+  for (const endpoint of endpoints) {
+    try {
+      const connection = new Connection(endpoint, "confirmed");
+      // Test the connection
+      await connection.getEpochInfo(); // Simple request to check if the endpoint is working
+      return connection;
+    } catch (error) {
+      continue; // Try the next endpoint
+    }
+  }
+  throw new Error("All RPC endpoints failed");
+};
+
 let feeComission = 0.1;
 
 export async function createToken(
-  publicKey, signTransaction, name, symbol, image, description, decimals, supply, revokeMintAuthority = false, website="", twitter="", telegram=""
+  networkConfiguration, publicKey, signTransaction, name, symbol, image, description="", decimals, supply, revokeMintAuthority = false, website="", twitter="", telegram=""
 ) {
   try {
     if (!publicKey || !signTransaction) {
       throw new Error("Wallet not connected or signTransaction unavailable.");
     }
+    
+    // Create a connection dynamically with fallback
+    const connection = await createConnection(networkConfiguration);
 
     // Step 1: Check wallet balance
     const balance = await connection.getBalance(publicKey);
@@ -58,20 +95,17 @@ export async function createToken(
         telegram: telegram // Replace with your Telegram
       },
       creator: {
-        name: "Pear Tools", // Replace with your creator name
-        site: "https://pear.tools" // Replace with your creator site
+        name: "SPLForge", // Replace with your creator name
+        site: "https://splforge.xyz" // Replace with your creator site
       }
     };
 
     // Step 3: Upload the metadata JSON to Pinata
     const metadataUri = await uploadMetadataToIPFS(metadata);
-    console.log("Metadata uploaded to IPFS. URI:", metadataUri);
 
     // Step 1: Generate a new mint keypair
     const mintKeypair = Keypair.generate();
     const mintPublicKey = mintKeypair.publicKey;
-
-    console.log("Mint Public Key:", mintPublicKey.toBase58());
 
     // Step 2: Get minimum rent exemption for mint account
     const lamports = await getMinimumBalanceForRentExemptMint(connection);
@@ -203,8 +237,6 @@ export async function createToken(
     // Add Commission Transfer to Transaction
     instructions.push(commissionIx);
 
-    console.log("Instructions:", instructions);
-
     // Step 4: Create transaction
     const transaction = new Transaction().add(...instructions);
     transaction.feePayer = publicKey;
@@ -236,15 +268,17 @@ export async function createToken(
       transactionSignature: signature.toString(),
     };
   } catch (error) {
-    console.error("Error creating token:", error);
     return {
       success: false,
-      message: "Token creation failed: " + error.message,
+      message: error.message,
     };
   }
 }
 
 export async function uploadImageToIPFS(image) {
+  if (!image) {
+    return "";
+  }
   const base64Data = image.split(',')[1];
   const binaryData = Buffer.from(base64Data, 'base64');
   
@@ -266,7 +300,7 @@ export async function uploadImageToIPFS(image) {
 
   const ipfsHash = response.data.IpfsHash;
   const ipfsUrl = `https://ipfs.io/ipfs/${ipfsHash}`;
-  console.log('Image uploaded to IPFS. URL:', ipfsUrl);
+  console.log('Image uploaded to IPFS:', ipfsUrl);
   return ipfsUrl;
 }
 
@@ -293,7 +327,6 @@ export async function uploadMetadataToIPFS(metadata) {
 
     const ipfsHash = response.data.IpfsHash;
     const ipfsUrl = `https://ipfs.io/ipfs/${ipfsHash}`;
-    console.log('Metadata uploaded to IPFS. URL:', ipfsUrl);
     return ipfsUrl;
   } catch (error) {
     console.error('Error uploading metadata to IPFS:', error);

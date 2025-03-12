@@ -1,8 +1,5 @@
 
 import { FC } from "react";
-import { SignMessage } from '../../components/SignMessage';
-import { SendTransaction } from '../../components/SendTransaction';
-import { SendVersionedTransaction } from '../../components/SendVersionedTransaction';
 import LiquidityPool from "components/LiquidityPool";
 
 export const LiquidityView: FC = ({ }) => {

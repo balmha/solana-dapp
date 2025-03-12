@@ -2,12 +2,15 @@ import React, { useState } from "react";
 import UploadFile from "./UploadFile";
 import { createToken } from "../utils/createToken";
 import { useWallet } from "@solana/wallet-adapter-react";
+import { useNetworkConfiguration } from '../contexts/NetworkConfigurationProvider';
 
 export const TokenCreator = () => {
+  const { networkConfiguration } = useNetworkConfiguration();
   const { connected, publicKey, signTransaction } = useWallet();
   const [toggleEnabled, setToggleEnabled] = useState(false);
   const [showMintInfo, setMintInfo] = useState(false);
   const [showFreezeInfo, setFreezeInfo] = useState(false);
+  const [showMoreOptions, setShowMoreOptions] = useState(false); // State for dropdown visibility
 
   // State for form inputs
   const [tokenName, setTokenName] = useState("");
@@ -17,12 +20,34 @@ export const TokenCreator = () => {
   const [tokenImage, setTokenImage] = useState(""); // Store the uploaded image URL
   const [tokenDescription, setTokenDescription] = useState("");
 
+  // State for optional fields
+  const [telegramLink, setTelegramLink] = useState("");
+  const [websiteLink, setWebsiteLink] = useState("");
+  const [twitterLink, setTwitterLink] = useState("");
+  // State to reset the image in UploadFile
+  const [resetImage, setResetImage] = useState(false);
+
   // Handle 50% button click
   const handleFiftyPercent = () => {
     const numericValue = parseFloat(tokenSupply); // Convert input value to a number
     if (!isNaN(numericValue)) {
       setTokenSupply((numericValue / 2).toString()); // Divide by 2 and update the state
     }
+  };
+
+  // Function to reset the form
+  const resetForm = () => {
+    setTokenName("");
+    setTokenSymbol("");
+    setTokenDecimals(6);
+    setTokenImage("");
+    setTokenDescription("");
+    setTokenSupply("");
+    setTelegramLink("");
+    setWebsiteLink("");
+    setTwitterLink("");
+    setToggleEnabled(false);
+    setResetImage(true); // Trigger image reset
   };
 
   // Handle Create Token button click
@@ -38,8 +63,11 @@ export const TokenCreator = () => {
       return;
     }
 
+    //setResetImage(false); // Reset the image
+
     // Call the createToken function
     const result = await createToken(
+      networkConfiguration,
       publicKey, // Wallet object
       signTransaction, // Sign transaction function
       tokenName,
@@ -48,14 +76,19 @@ export const TokenCreator = () => {
       tokenDescription,
       tokenDecimals,
       parseFloat(tokenSupply),
-      toggleEnabled // Revoke Mint Authority
+      toggleEnabled, // Revoke Mint Authority
+      websiteLink, // Optional: Website link
+      twitterLink, // Optional: X (Twitter) link
+      telegramLink // Optional: Telegram link
     );
 
     // Handle the result
     if (result.success) {
       alert(`Token created successfully!\nMint Public Key: ${result.mintPublicKey}\nTransaction Signature: ${result.transactionSignature}`);
+      setResetImage(true); // Reset the image
     } else {
       alert(`Token creation failed: ${result.message}`);
+      resetForm(); // Reset the form
     }
   };
 
@@ -115,7 +148,7 @@ export const TokenCreator = () => {
                   className="w-full bg-slate-700 px-4 py-3 rounded-b-lg text-white placeholder-gray-400 hover:bg-slate-600 transition-colors"
                   value={tokenDecimals}
                   onChange={(e) => setTokenDecimals(parseInt(e.target.value))}
-                  min="0"
+                  min="1"
                   max="9"
                 />
               </div>
@@ -144,6 +177,7 @@ export const TokenCreator = () => {
                   className="w-full bg-slate-700 px-4 py-3 rounded-b-lg text-white placeholder-gray-400 hover:bg-slate-600 transition-colors"
                   value={tokenSupply}
                   onChange={(e) => setTokenSupply(e.target.value)}
+                  min="1"
                 />
               </div>
             </div>
@@ -155,7 +189,7 @@ export const TokenCreator = () => {
               </div>
               <div className="w-full bg-slate-700 px-4 py-2 rounded-b-lg text-white placeholder-gray-400 hover:bg-slate-600 transition-colors">
                 <div className="w-full h-24 flex items-center justify-center rounded-lg border-2 border-dashed border-indigo-700/30 cursor-pointer">
-                  <UploadFile onFileUpload={(url) => setTokenImage(url)} />
+                  <UploadFile onFileUpload={(url) => setTokenImage(url)} resetImage={resetImage}/>
                 </div>
               </div>
             </div>
@@ -244,6 +278,67 @@ export const TokenCreator = () => {
                 <span className="text-indigo-400 text-sm">(0.1 SOL)</span>
               </div>
             </div>
+
+            {/* Show More Options Button */}
+            <div className="flex justify-start">
+              <button
+                className="flex items-center text-indigo-400 hover:text-indigo-300 transition-colors"
+                onClick={() => setShowMoreOptions(!showMoreOptions)}
+              >
+                <span className="mr-2">Show more options</span>
+                <span className="material-symbols-outlined">
+                  {showMoreOptions ? "arrow_drop_up" : "arrow_drop_down"}
+                </span>
+              </button>
+            </div>
+
+            {/* Optional Fields (Telegram, Website, X) */}
+            {showMoreOptions && (
+              <div className="space-y-4">
+                {/* Telegram Link */}
+                <div className="relative">
+                  <div className="flex justify-between items-center bg-indigo-900/50 border border-indigo-700/30 rounded-t-lg px-3 py-1">
+                    <span className="text-indigo-300 text-sm">Telegram Link</span>
+                  </div>
+                  <input
+                    type="url"
+                    placeholder="Enter Telegram link"
+                    className="w-full bg-slate-700 px-4 py-3 rounded-b-lg text-white placeholder-gray-400 hover:bg-slate-600 transition-colors"
+                    value={telegramLink}
+                    onChange={(e) => setTelegramLink(e.target.value)}
+                  />
+                </div>
+
+                {/* Website Link */}
+                <div className="relative">
+                  <div className="flex justify-between items-center bg-indigo-900/50 border border-indigo-700/30 rounded-t-lg px-3 py-1">
+                    <span className="text-indigo-300 text-sm">Website Link</span>
+                  </div>
+                  <input
+                    type="url"
+                    placeholder="Enter website link"
+                    className="w-full bg-slate-700 px-4 py-3 rounded-b-lg text-white placeholder-gray-400 hover:bg-slate-600 transition-colors"
+                    value={websiteLink}
+                    onChange={(e) => setWebsiteLink(e.target.value)}
+                  />
+                </div>
+
+                {/* X (Twitter) Link */}
+                <div className="relative">
+                  <div className="flex justify-between items-center bg-indigo-900/50 border border-indigo-700/30 rounded-t-lg px-3 py-1">
+                    <span className="text-indigo-300 text-sm">X (Twitter) Link</span>
+                  </div>
+                  <input
+                    type="url"
+                    placeholder="Enter X (Twitter) link"
+                    className="w-full bg-slate-700 px-4 py-3 rounded-b-lg text-white placeholder-gray-400 hover:bg-slate-600 transition-colors"
+                    value={twitterLink}
+                    onChange={(e) => setTwitterLink(e.target.value)}
+                  />
+                </div>
+              </div>
+            )}
+            <br></br>
 
             {/* Create Token Button */}
             <button
