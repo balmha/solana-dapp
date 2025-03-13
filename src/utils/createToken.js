@@ -20,8 +20,6 @@ import { createCreateMetadataAccountV3Instruction } from "@metaplex-foundation/m
 
 // Import Axios for uploading images to IPFS
 const axios = require('axios');
-const pinataApiKey = process.env.NEXT_PUBLIC_PINATA_API_KEY;
-const pinataSecretApiKey = process.env.NEXT_PUBLIC_PINATA_SECRET_KEY;
 
 // Define a function to get the RPC endpoint based on the network configuration
 const getRpcEndpoint = (networkConfiguration) => {
@@ -83,7 +81,7 @@ export async function createToken(
     }
 
     //Upload Image and Metadata to Pinata
-    const ImageURL = await uploadImageToIPFS(image);
+    const ImageURL = await uploadImageToIPFS(image, networkConfiguration);
 
     // Step 2: Create the metadata JSON
     const metadata = {
@@ -103,7 +101,7 @@ export async function createToken(
     };
 
     // Step 3: Upload the metadata JSON to Pinata
-    const metadataUri = await uploadMetadataToIPFS(metadata);
+    const metadataUri = await uploadMetadataToIPFS(metadata, networkConfiguration);
 
     // Step 1: Generate a new mint keypair
     const mintKeypair = Keypair.generate();
@@ -275,10 +273,20 @@ export async function createToken(
   }
 }
 
-export async function uploadImageToIPFS(image) {
+export async function uploadImageToIPFS(image, networkConfiguration) {
   if (!image) {
     return "";
   }
+
+  // Determine the correct Pinata API keys based on the network configuration
+  const pinataApiKey = networkConfiguration === "mainnet-beta"
+    ? process.env.NEXT_PUBLIC_PINATA_API_KEY_PROD
+    : process.env.NEXT_PUBLIC_PINATA_API_KEY;
+
+  const pinataSecretApiKey = networkConfiguration === "mainnet-beta"
+    ? process.env.NEXT_PUBLIC_PINATA_SECRET_KEY_PROD
+    : process.env.NEXT_PUBLIC_PINATA_SECRET_KEY;
+
   const base64Data = image.split(',')[1];
   const binaryData = Buffer.from(base64Data, 'base64');
   
@@ -303,8 +311,17 @@ export async function uploadImageToIPFS(image) {
   return ipfsUrl;
 }
 
-export async function uploadMetadataToIPFS(metadata) {
+export async function uploadMetadataToIPFS(metadata, networkConfiguration) {
   try {
+    // Determine the correct Pinata API keys based on the network configuration
+    const pinataApiKey = networkConfiguration === "mainnet-beta"
+      ? process.env.NEXT_PUBLIC_PINATA_API_KEY_PROD
+      : process.env.NEXT_PUBLIC_PINATA_API_KEY;
+
+    const pinataSecretApiKey = networkConfiguration === "mainnet-beta"
+      ? process.env.NEXT_PUBLIC_PINATA_SECRET_KEY_PROD
+      : process.env.NEXT_PUBLIC_PINATA_SECRET_KEY;
+
     // Convert metadata JSON to a Buffer
     const jsonBuffer = Buffer.from(JSON.stringify(metadata));
 
