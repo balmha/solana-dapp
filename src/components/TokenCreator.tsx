@@ -10,28 +10,127 @@ export const TokenCreator = () => {
   const [toggleEnabled, setToggleEnabled] = useState(false);
   const [showMintInfo, setMintInfo] = useState(false);
   const [showFreezeInfo, setFreezeInfo] = useState(false);
-  const [showMoreOptions, setShowMoreOptions] = useState(false); // State for dropdown visibility
+  const [showMoreOptions, setShowMoreOptions] = useState(false);
 
   // State for form inputs
   const [tokenName, setTokenName] = useState("");
   const [tokenSymbol, setTokenSymbol] = useState("");
-  const [tokenDecimals, setTokenDecimals] = useState(6); // Default to 6 decimals
-  const [tokenSupply, setTokenSupply] = useState("");
-  const [tokenImage, setTokenImage] = useState(""); // Store the uploaded image URL
+  const [tokenDecimals, setTokenDecimals] = useState(""); // No default value
+  const [tokenSupply, setTokenSupply] = useState(""); // No default value
+  const [tokenImage, setTokenImage] = useState("");
   const [tokenDescription, setTokenDescription] = useState("");
-
-  // State for optional fields
   const [telegramLink, setTelegramLink] = useState("");
   const [websiteLink, setWebsiteLink] = useState("");
   const [twitterLink, setTwitterLink] = useState("");
-  // State to reset the image in UploadFile
   const [resetImage, setResetImage] = useState(false);
 
-  // Handle 50% button click
-  const handleFiftyPercent = () => {
-    const numericValue = parseFloat(tokenSupply); // Convert input value to a number
-    if (!isNaN(numericValue)) {
-      setTokenSupply((numericValue / 2).toString()); // Divide by 2 and update the state
+  // State for validation errors
+  const [tokenNameError, setTokenNameError] = useState("");
+  const [tokenSymbolError, setTokenSymbolError] = useState("");
+  const [tokenDecimalsError, setTokenDecimalsError] = useState("");
+  const [tokenSupplyError, setTokenSupplyError] = useState("");
+  const [telegramLinkError, setTelegramLinkError] = useState("");
+  const [websiteLinkError, setWebsiteLinkError] = useState("");
+  const [twitterLinkError, setTwitterLinkError] = useState("");
+  const [tokenDescriptionError, setTokenDescriptionError] = useState("");
+
+  // Constants
+  const MAX_DESCRIPTION_LENGTH = 500;
+
+  // Regex validation functions
+  const validateTelegramLink = (link: string) => {
+    const telegramRegex = /^https:\/\/t\.me\/[a-zA-Z0-9_]+$/;
+    return telegramRegex.test(link);
+  };
+
+  const validateWebsiteLink = (link: string) => {
+    const websiteRegex = /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/;
+    return websiteRegex.test(link);
+  };
+
+  const validateTwitterLink = (link: string) => {
+    const twitterRegex = /^https:\/\/(twitter\.com|x\.com)\/[a-zA-Z0-9_]+$/;
+    return twitterRegex.test(link);
+  };
+
+  // Handle input changes with validation
+  const handleTokenNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setTokenName(value);
+    setTokenNameError(value ? "" : "Token name is required.");
+  };
+
+  const handleTokenSymbolChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setTokenSymbol(value);
+    setTokenSymbolError(value ? "" : "Token symbol is required.");
+  };
+
+  const handleTokenDecimalsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setTokenDecimals(value);
+    setTokenDecimalsError(value ? (Number(value) >= 1 && Number(value) <= 9 ? "" : "Decimals must be between 1 and 9.") : "");
+  };
+
+  const handleTokenSupplyChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setTokenSupply(value);
+    setTokenSupplyError(value ? (Number(value) >= 1 ? "" : "Supply must be at least 1.") : "");
+  };
+
+  const handleTelegramLinkChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setTelegramLink(value);
+  };
+
+  const handleWebsiteLinkChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setWebsiteLink(value);
+  };
+
+  const handleTwitterLinkChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setTwitterLink(value);
+  };
+
+  const handleDescriptionChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const value = e.target.value;
+    if (value.length <= MAX_DESCRIPTION_LENGTH) {
+      setTokenDescription(value);
+      setTokenDescriptionError("");
+    } else {
+      setTokenDescriptionError(`Description must be ${MAX_DESCRIPTION_LENGTH} characters or less.`);
+    }
+  };
+
+  // Handle blur events for optional links
+  const handleTelegramLinkBlur = () => {
+    if (telegramLink) {
+      const fullUrl = telegramLink.startsWith("https://") ? telegramLink : `https://${telegramLink}`;
+      setTelegramLink(fullUrl);
+      setTelegramLinkError(validateTelegramLink(fullUrl) ? "" : "Invalid Telegram link.");
+    } else {
+      setTelegramLinkError("");
+    }
+  };
+
+  const handleWebsiteLinkBlur = () => {
+    if (websiteLink) {
+      const fullUrl = websiteLink.startsWith("https://") ? websiteLink : `https://${websiteLink}`;
+      setWebsiteLink(fullUrl);
+      setWebsiteLinkError(validateWebsiteLink(fullUrl) ? "" : "Invalid website link.");
+    } else {
+      setWebsiteLinkError("");
+    }
+  };
+
+  const handleTwitterLinkBlur = () => {
+    if (twitterLink) {
+      const fullUrl = twitterLink.startsWith("https://") ? twitterLink : `https://${twitterLink}`;
+      setTwitterLink(fullUrl);
+      setTwitterLinkError(validateTwitterLink(fullUrl) ? "" : "Invalid X (Twitter) link.");
+    } else {
+      setTwitterLinkError("");
     }
   };
 
@@ -39,15 +138,26 @@ export const TokenCreator = () => {
   const resetForm = () => {
     setTokenName("");
     setTokenSymbol("");
-    setTokenDecimals(6);
+    setTokenDecimals(""); // Reset to empty string
     setTokenImage("");
     setTokenDescription("");
-    setTokenSupply("");
+    setTokenSupply(""); // Reset to empty string
     setTelegramLink("");
     setWebsiteLink("");
     setTwitterLink("");
     setToggleEnabled(false);
-    setResetImage(true); // Trigger image reset
+    setResetImage(true);
+    setTimeout(() => setResetImage(false), 100);
+
+    // Reset validation errors
+    setTokenNameError("");
+    setTokenSymbolError("");
+    setTokenDecimalsError("");
+    setTokenSupplyError("");
+    setTelegramLinkError("");
+    setWebsiteLinkError("");
+    setTwitterLinkError("");
+    setTokenDescriptionError("");
   };
 
   // Handle Create Token button click
@@ -58,37 +168,68 @@ export const TokenCreator = () => {
     }
 
     // Validate form inputs
-    if (!tokenName || !tokenSymbol || !tokenDecimals || !tokenSupply) {
-      alert("Please fill out all required fields");
-      return;
+    let isValid = true;
+    if (!tokenName) {
+      setTokenNameError("Token name is required.");
+      isValid = false;
+    }
+    if (!tokenSymbol) {
+      setTokenSymbolError("Token symbol is required.");
+      isValid = false;
+    }
+    if (!tokenDecimals || Number(tokenDecimals) < 1 || Number(tokenDecimals) > 9) {
+      setTokenDecimalsError("Decimals must be between 1 and 9.");
+      isValid = false;
+    }
+    if (!tokenSupply || Number(tokenSupply) < 1) {
+      setTokenSupplyError("Supply must be at least 1.");
+      isValid = false;
+    }
+    if (telegramLink && !validateTelegramLink(telegramLink)) {
+      setTelegramLinkError("Invalid Telegram link.");
+      isValid = false;
+    }
+    if (websiteLink && !validateWebsiteLink(websiteLink)) {
+      setWebsiteLinkError("Invalid website link.");
+      isValid = false;
+    }
+    if (twitterLink && !validateTwitterLink(twitterLink)) {
+      setTwitterLinkError("Invalid X (Twitter) link.");
+      isValid = false;
+    }
+    if (tokenDescription.length > MAX_DESCRIPTION_LENGTH) {
+      setTokenDescriptionError(`Description must be ${MAX_DESCRIPTION_LENGTH} characters or less.`);
+      isValid = false;
     }
 
-    //setResetImage(false); // Reset the image
+    if (!isValid) {
+      return;
+    }
 
     // Call the createToken function
     const result = await createToken(
       networkConfiguration,
-      publicKey, // Wallet object
-      signTransaction, // Sign transaction function
+      publicKey,
+      signTransaction,
       tokenName,
       tokenSymbol,
       tokenImage,
       tokenDescription,
-      tokenDecimals,
-      parseFloat(tokenSupply),
-      toggleEnabled, // Revoke Mint Authority
-      websiteLink, // Optional: Website link
-      twitterLink, // Optional: X (Twitter) link
-      telegramLink // Optional: Telegram link
+      Number(tokenDecimals), // Convert to number
+      Number(tokenSupply), // Convert to number
+      toggleEnabled,
+      websiteLink,
+      twitterLink,
+      telegramLink
     );
 
     // Handle the result
     if (result.success) {
       alert(`Token created successfully!\nMint Public Key: ${result.mintPublicKey}\nTransaction Signature: ${result.transactionSignature}`);
-      setResetImage(true); // Reset the image
+      resetForm();
     } else {
       alert(`Token creation failed: ${result.message}`);
-      resetForm(); // Reset the form
+      resetForm();
     }
   };
 
@@ -118,8 +259,9 @@ export const TokenCreator = () => {
                   placeholder="Enter token name"
                   className="w-full bg-slate-700 px-4 py-3 rounded-b-lg text-white placeholder-gray-400 hover:bg-slate-600 transition-colors"
                   value={tokenName}
-                  onChange={(e) => setTokenName(e.target.value)}
+                  onChange={handleTokenNameChange}
                 />
+                {tokenNameError && <p className="text-red-500 text-sm mt-1">{tokenNameError}</p>}
               </div>
 
               <div className="relative">
@@ -131,8 +273,9 @@ export const TokenCreator = () => {
                   placeholder="Enter token symbol"
                   className="w-full bg-slate-700 px-4 py-3 rounded-b-lg text-white placeholder-gray-400 hover:bg-slate-600 transition-colors"
                   value={tokenSymbol}
-                  onChange={(e) => setTokenSymbol(e.target.value)}
+                  onChange={handleTokenSymbolChange}
                 />
+                {tokenSymbolError && <p className="text-red-500 text-sm mt-1">{tokenSymbolError}</p>}
               </div>
             </div>
 
@@ -147,10 +290,12 @@ export const TokenCreator = () => {
                   placeholder="Enter decimals (e.g., 6)"
                   className="w-full bg-slate-700 px-4 py-3 rounded-b-lg text-white placeholder-gray-400 hover:bg-slate-600 transition-colors"
                   value={tokenDecimals}
-                  onChange={(e) => setTokenDecimals(parseInt(e.target.value))}
+                  onChange={handleTokenDecimalsChange}
                   min="1"
                   max="9"
+                  step="1"
                 />
+                {tokenDecimalsError && <p className="text-red-500 text-sm mt-1">{tokenDecimalsError}</p>}
               </div>
 
               <div className="relative">
@@ -158,16 +303,10 @@ export const TokenCreator = () => {
                   <span className="text-indigo-300 text-sm">Supply</span>
                   <div className="flex items-center gap-2">
                     <button
-                      onClick={handleFiftyPercent}
-                      className="text-indigo-400 text-sm hover:text-white transition-colors"
-                    >
-                      50%
-                    </button>
-                    <button
                       onClick={() => setTokenSupply("21000000")}
                       className="text-indigo-400 text-sm hover:text-white transition-colors"
                     >
-                      Max
+                      Recommended
                     </button>
                   </div>
                 </div>
@@ -176,9 +315,11 @@ export const TokenCreator = () => {
                   placeholder="Enter total supply"
                   className="w-full bg-slate-700 px-4 py-3 rounded-b-lg text-white placeholder-gray-400 hover:bg-slate-600 transition-colors"
                   value={tokenSupply}
-                  onChange={(e) => setTokenSupply(e.target.value)}
+                  onChange={handleTokenSupplyChange}
                   min="1"
+                  step="1"
                 />
+                {tokenSupplyError && <p className="text-red-500 text-sm mt-1">{tokenSupplyError}</p>}
               </div>
             </div>
 
@@ -189,7 +330,7 @@ export const TokenCreator = () => {
               </div>
               <div className="w-full bg-slate-700 px-4 py-2 rounded-b-lg text-white placeholder-gray-400 hover:bg-slate-600 transition-colors">
                 <div className="w-full h-24 flex items-center justify-center rounded-lg border-2 border-dashed border-indigo-700/30 cursor-pointer">
-                  <UploadFile onFileUpload={(url) => setTokenImage(url)} resetImage={resetImage}/>
+                  <UploadFile onFileUpload={(url) => setTokenImage(url)} resetImage={resetImage} />
                 </div>
               </div>
             </div>
@@ -198,14 +339,18 @@ export const TokenCreator = () => {
             <div className="relative">
               <div className="flex justify-between items-center bg-indigo-900/50 border border-indigo-700/30 rounded-t-lg px-3 py-1">
                 <span className="text-indigo-300 text-sm">Description</span>
+                <span className="text-indigo-400 text-sm">
+                  {tokenDescription.length}/{MAX_DESCRIPTION_LENGTH}
+                </span>
               </div>
               <textarea
                 placeholder="Enter token description"
                 className="w-full bg-slate-700 px-4 py-2 rounded-b-lg text-white placeholder-gray-400 hover:bg-slate-600 transition-colors"
                 rows={4}
                 value={tokenDescription}
-                onChange={(e) => setTokenDescription(e.target.value)}
+                onChange={handleDescriptionChange}
               />
+              {tokenDescriptionError && <p className="text-red-500 text-sm mt-1">{tokenDescriptionError}</p>}
             </div>
 
             {/* Revoke Freeze Authority */}
@@ -300,13 +445,18 @@ export const TokenCreator = () => {
                   <div className="flex justify-between items-center bg-indigo-900/50 border border-indigo-700/30 rounded-t-lg px-3 py-1">
                     <span className="text-indigo-300 text-sm">Telegram Link</span>
                   </div>
-                  <input
-                    type="url"
-                    placeholder="Enter Telegram link"
-                    className="w-full bg-slate-700 px-4 py-3 rounded-b-lg text-white placeholder-gray-400 hover:bg-slate-600 transition-colors"
-                    value={telegramLink}
-                    onChange={(e) => setTelegramLink(e.target.value)}
-                  />
+                  <div className="flex items-center bg-slate-700 px-4 py-3 rounded-b-lg text-white placeholder-gray-400 hover:bg-slate-600 transition-colors">
+                    <span className="text-gray-400">https://</span>
+                    <input
+                      type="text"
+                      placeholder="t.me/username"
+                      className="w-full bg-transparent outline-none"
+                      value={telegramLink.replace("https://", "")}
+                      onChange={handleTelegramLinkChange}
+                      onBlur={handleTelegramLinkBlur}
+                    />
+                  </div>
+                  {telegramLinkError && <p className="text-red-500 text-sm mt-1">{telegramLinkError}</p>}
                 </div>
 
                 {/* Website Link */}
@@ -314,13 +464,18 @@ export const TokenCreator = () => {
                   <div className="flex justify-between items-center bg-indigo-900/50 border border-indigo-700/30 rounded-t-lg px-3 py-1">
                     <span className="text-indigo-300 text-sm">Website Link</span>
                   </div>
-                  <input
-                    type="url"
-                    placeholder="Enter website link"
-                    className="w-full bg-slate-700 px-4 py-3 rounded-b-lg text-white placeholder-gray-400 hover:bg-slate-600 transition-colors"
-                    value={websiteLink}
-                    onChange={(e) => setWebsiteLink(e.target.value)}
-                  />
+                  <div className="flex items-center bg-slate-700 px-4 py-3 rounded-b-lg text-white placeholder-gray-400 hover:bg-slate-600 transition-colors">
+                    <span className="text-gray-400">https://</span>
+                    <input
+                      type="text"
+                      placeholder="example.com"
+                      className="w-full bg-transparent outline-none"
+                      value={websiteLink.replace("https://", "")}
+                      onChange={handleWebsiteLinkChange}
+                      onBlur={handleWebsiteLinkBlur}
+                    />
+                  </div>
+                  {websiteLinkError && <p className="text-red-500 text-sm mt-1">{websiteLinkError}</p>}
                 </div>
 
                 {/* X (Twitter) Link */}
@@ -328,13 +483,18 @@ export const TokenCreator = () => {
                   <div className="flex justify-between items-center bg-indigo-900/50 border border-indigo-700/30 rounded-t-lg px-3 py-1">
                     <span className="text-indigo-300 text-sm">X (Twitter) Link</span>
                   </div>
-                  <input
-                    type="url"
-                    placeholder="Enter X (Twitter) link"
-                    className="w-full bg-slate-700 px-4 py-3 rounded-b-lg text-white placeholder-gray-400 hover:bg-slate-600 transition-colors"
-                    value={twitterLink}
-                    onChange={(e) => setTwitterLink(e.target.value)}
-                  />
+                  <div className="flex items-center bg-slate-700 px-4 py-3 rounded-b-lg text-white placeholder-gray-400 hover:bg-slate-600 transition-colors">
+                    <span className="text-gray-400">https://</span>
+                    <input
+                      type="text"
+                      placeholder="twitter.com/username"
+                      className="w-full bg-transparent outline-none"
+                      value={twitterLink.replace("https://", "")}
+                      onChange={handleTwitterLinkChange}
+                      onBlur={handleTwitterLinkBlur}
+                    />
+                  </div>
+                  {twitterLinkError && <p className="text-red-500 text-sm mt-1">{twitterLinkError}</p>}
                 </div>
               </div>
             )}

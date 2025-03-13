@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Image from 'next/image';
 
 interface UploadFileProps {
@@ -8,17 +8,28 @@ interface UploadFileProps {
 
 const UploadFile: React.FC<UploadFileProps> = ({ onFileUpload, resetImage }) => {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // Reset the image preview when `resetImage` changes
+  // Reset the image preview and file input when `resetImage` changes
   useEffect(() => {
     if (resetImage) {
       setImagePreview(null);
+      if (fileInputRef.current) {
+        fileInputRef.current.value = ""; // Clear the file input
+      }
+      onFileUpload(""); // Notify the parent that the image has been cleared
     }
-  }, [resetImage]);
+  }, [resetImage, onFileUpload]);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
+      // Validate file type
+      if (!file.type.startsWith("image/")) {
+        alert("Please upload a valid image file.");
+        return;
+      }
+
       // Generate a preview URL for the uploaded image
       const reader = new FileReader();
       reader.onloadend = () => {
@@ -68,6 +79,7 @@ const UploadFile: React.FC<UploadFileProps> = ({ onFileUpload, resetImage }) => 
         accept="image/*"
         className="hidden"
         onChange={handleFileChange}
+        ref={fileInputRef} // Add a ref to the file input
         data-gtm-form-interact-field-id="0"
       />
     </label>

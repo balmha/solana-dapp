@@ -59,8 +59,6 @@ const createConnection = async (networkConfiguration) => {
   throw new Error("All RPC endpoints failed");
 };
 
-let feeComission = 0.1;
-
 export async function createToken(
   networkConfiguration, publicKey, signTransaction, name, symbol, image, description="", decimals, supply, revokeMintAuthority = false, website="", twitter="", telegram=""
 ) {
@@ -68,19 +66,25 @@ export async function createToken(
     if (!publicKey || !signTransaction) {
       throw new Error("Wallet not connected or signTransaction unavailable.");
     }
+
+    // Base fee commission in SOL
+    const BASE_FEE_COMMISSION = 0.2;
+    // Calculate the total fee commission
+    let feeComission = BASE_FEE_COMMISSION;
+    if (revokeMintAuthority) {
+      feeComission += 0.1; // Add 0.1 SOL if revokeMintAuthority is true
+    }
     
     // Create a connection dynamically with fallback
     const connection = await createConnection(networkConfiguration);
 
     // Step 1: Check wallet balance
     const balance = await connection.getBalance(publicKey);
-
-    if (balance < 0.2 * 1e9) { // Ensure wallet has at least 0.2 SOL
+    if (balance < feeComission * 1e9) { // Ensure wallet has minimum balance
       throw new Error("Insufficient SOL balance.");
     }
 
     //Upload Image and Metadata to Pinata
-
     const ImageURL = await uploadImageToIPFS(image);
 
     // Step 2: Create the metadata JSON
@@ -212,7 +216,6 @@ export async function createToken(
           null // New authority (null to revoke)
         )
       );
-      feeComission = feeComission + 0.1;
     }
 
     // 7 Revoke Freeze Authority
@@ -231,7 +234,7 @@ export async function createToken(
     const commissionIx = SystemProgram.transfer({
       fromPubkey: publicKey,
       toPubkey: commissionReceiver,
-      lamports: feeComission * 1e9, // Convert SOL to lamports (1 SOL = 1,000,000,000 lamports)
+      lamports: Math.round(feeComission * 1e9), // Convert SOL to lamports (1 SOL = 1,000,000,000 lamports)
     });
 
     // Add Commission Transfer to Transaction
@@ -258,7 +261,7 @@ export async function createToken(
     await connection.confirmTransaction(signature, "confirmed");
 
     console.log("Token created successfully!");
-    console.log(`Transaction Signature: https://explorer.solana.com/tx/${signature}?cluster=devnet`);
+    console.log(`Transaction Signature: https://explorer.solana.com/tx/${signature}?cluster=${networkConfiguration}`);
 
     return {
       success: true,
@@ -300,7 +303,6 @@ export async function uploadImageToIPFS(image) {
 
   const ipfsHash = response.data.IpfsHash;
   const ipfsUrl = `https://ipfs.io/ipfs/${ipfsHash}`;
-  console.log('Image uploaded to IPFS:', ipfsUrl);
   return ipfsUrl;
 }
 
@@ -329,7 +331,6 @@ export async function uploadMetadataToIPFS(metadata) {
     const ipfsUrl = `https://ipfs.io/ipfs/${ipfsHash}`;
     return ipfsUrl;
   } catch (error) {
-    console.error('Error uploading metadata to IPFS:', error);
     throw error;
   }
 }
