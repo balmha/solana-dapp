@@ -62,8 +62,18 @@ export const TokenCreator = () => {
 
   const handleTokenSymbolChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
+  
+    // Validate symbol
+    if (!value) {
+      setTokenSymbolError("Token symbol is required.");
+    } else if (value.length > 8) {
+      setTokenSymbolError("Token symbol must be 8 characters or less.");
+    } else {
+      setTokenSymbolError("");
+    }
+  
+    // Update the state with the new value
     setTokenSymbol(value);
-    setTokenSymbolError(value ? "" : "Token symbol is required.");
   };
 
   const handleTokenDecimalsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -526,7 +536,7 @@ export const TokenCreator = () => {
           <p className="text-base">6. Upload the image for your token (PNG). - Optional</p>
           <p className="text-base">7. Provide a brief description for your SPL Token. - Optional</p>
           <p className="text-base">8. Click on create, accept the transaction and wait until your tokens ready.</p>
-          <p className="text-base">The Pear Tool&lsquo;s fee for Token creation is 0.1 SOL, not covering fees for SPL Token Creation.</p>
+          <p className="text-base">The SPLForge&lsquo;s fee for Token creation is 0.2 SOL, not covering fees for SPL Token Creation.</p>
           <br></br>
           <h2 className="text-xl font-bold">Revoke Freeze Authority:</h2>
           <p className="text-base text-indigo-300">If you want to create a liquidity pool you will need to &lsquo;Revoke Freeze Authority&rsquo; of the Token - Required.</p>
@@ -535,7 +545,6 @@ export const TokenCreator = () => {
           <br></br>
           <p className="text-base">Once the creation process starts, it will only take a few seconds! Once complete, you will receive the total supply of the token in your wallet.</p>
           <p className="text-base">With our user-friendly platform, managing your tokens is simple and affordable.</p>
-          <p className="text-base">You can choose to revoke mint authority later if you choose</p>
         </div>
       </div>
     </div>
