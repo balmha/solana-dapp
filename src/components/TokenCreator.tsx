@@ -225,7 +225,7 @@ export const TokenCreator = () => {
 
     // Handle the result
     if (result.success) {
-      alert(`Token created successfully!\nMint Public Key: ${result.mintPublicKey}\nTransaction Signature: ${result.transactionSignature}`);
+      alert(`Token created successfully - See your transaction in: https://explorer.solana.com/tx/${result.transactionSignature}?cluster=${result.networkConfiguration}`);
       resetForm();
     } else {
       alert(`Token creation failed: ${result.message}`);

@@ -9,7 +9,7 @@ export const Footer: FC = () => {
                         <div className="flex flex-col col-span-2 mx-4 items-center md:items-start">
                             <div className="flex items-center space-x-3">
                                 <a 
-                                    href="https://twitter.com/splforge" 
+                                    href="https://x.com/SPLForge" 
                                     target="_blank" rel="noreferrer"
                                     className="flex items-center justify-center w-8 h-8 rounded-full transition duration-150 ease-in-out hover:text-white hover:bg-opacity-10"
                                 >
