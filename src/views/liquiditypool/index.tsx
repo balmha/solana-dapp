@@ -1,16 +1,12 @@
-
 import { FC } from "react";
 import LiquidityPool from "components/LiquidityPool";
 
 export const LiquidityView: FC = ({ }) => {
-
   return (
-    <div className="md:hero mx-auto p-4 md:p-16 flex flex-col md:flex-row justify-center items-center">
-      <div className="md:hero-content flex flex-col">
-        {/* CONTENT GOES HERE */}
-        <div className="text-center">
-          <LiquidityPool />
-        </div>
+    <div className="md:hero mx-auto flex flex-col w-full h-full">
+      {/* You can adjust padding here to be responsive */}
+      <div className="p-[0.5rem] md:p-[4rem] lg:p-[0rem]">
+        <LiquidityPool />
       </div>
     </div>
   );

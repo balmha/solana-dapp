@@ -8,7 +8,6 @@ import { ContextProvider } from '../contexts/ContextProvider';
 import { AppBar } from '../components/AppBar';
 import { ContentContainer } from '../components/ContentContainer';
 import { Footer } from '../components/Footer';
-import Notifications from '../components/Notification';
 
 
 const App: FC<AppProps> = ({ Component, pageProps }) => {
@@ -19,7 +18,6 @@ const App: FC<AppProps> = ({ Component, pageProps }) => {
           </Head>
           <ContextProvider>
             <div className="flex flex-col h-screen">
-              <Notifications/>
               <AppBar/>
               <ContentContainer>
                 <Component {...pageProps} />
