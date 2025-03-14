@@ -23,15 +23,8 @@ export const AppBar: React.FC = () => {
         {/* Logo */}
         <div className="p-4 flex items-center justify-center">
           <Link href="/" rel="noopener noreferrer" passHref>
-            <Image
-              src="/splforge-icon.png"
-              alt="SPLForge Icon"
-              width={40}
-              height={60}
-              className="object-contain"
-            />
+            <h1 className="audiowide-text text-center md:pl-2 font-bold bg-clip-text text-white">SPLForge</h1>
           </Link>
-          <h1 className="audiowide-text text-center md:pl-2 font-bold bg-clip-text text-white">SPLForge</h1>
         </div>
 
         {/* Nav Links */}

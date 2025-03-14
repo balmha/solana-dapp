@@ -1,11 +1,10 @@
 // Next, React
-import { FC, useEffect} from 'react';
+import { FC} from 'react';
 import Link from 'next/link';
 // Wallet
 import { useWallet, useConnection } from '@solana/wallet-adapter-react';
 import pkg from '../../../package.json';
-// Store
-import useUserSOLBalanceStore from '../../stores/useUserSOLBalanceStore';
+import Image from 'next/image';
 
 export const HomeView: FC = ({ }) => {
   const wallet = useWallet();
@@ -21,14 +20,20 @@ export const HomeView: FC = ({ }) => {
   }, [wallet.publicKey, connection, getUserSOLBalance]) */
 
   return (
-    <div className="md:hero mx-auto p-4 md:p-36 flex flex-col md:flex-row justify-center items-center">
+    <div className="md:hero mx-auto p-4 md:pt-[1.5rem] md:pl-[10rem] flex flex-col md:flex-row justify-center items-center">
       <div className="md:hero-content flex flex-col">
         <div className='mt-6'>
         <div className='text-sm font-normal align-bottom text-right text-white mt-4'>v{pkg.version}</div>
-        <h1 className="audiowide-text text-center text-5xl md:pl-12 font-bold bg-clip-text text-white mb-4">
+        {/* <h1 className="audiowide-text text-center text-5xl md:pl-12 font-bold bg-clip-text text-white mb-4">
           SPLForge
-        </h1>
-        
+        </h1> */}
+        <Image
+              src="/splforge-superlogo-nobackground.png"
+              alt="SPLForge Logo"
+              width={432}
+              height={324}
+              className="object-contain"
+        />
         </div>
         <h4 className="md:w-full text-2x1 md:text-4xl text-center text-slate-300 my-2">
           <p className='sourcesans-text text-slate-300 font-semibold'>Create and Manage Tokens on Solana.</p><br></br>
