@@ -14,7 +14,7 @@ const App: FC<AppProps> = ({ Component, pageProps }) => {
     return (
         <>
           <Head>
-            <title>SPLForge</title>
+            <title>Solana Token Creator | Create SPL Tokens easily - SPLForge</title>
           </Head>
           <ContextProvider>
             <div className="flex flex-col h-screen">

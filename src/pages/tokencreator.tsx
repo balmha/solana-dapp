@@ -6,7 +6,7 @@ const Creator: NextPage = (props) => {
   return (
     <div>
       <Head>
-        <title>SPLForge</title>
+        <title>Solana Token Creator | Create SPL Tokens easily - SPLForge</title>
         <meta
           name="description"
           content="Token Creator Functionality"

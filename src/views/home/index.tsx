@@ -10,23 +10,10 @@ export const HomeView: FC = ({ }) => {
   const wallet = useWallet();
   const { connection } = useConnection();
 
-  /* const balance = useUserSOLBalanceStore((s) => s.balance)
-  const { getUserSOLBalance } = useUserSOLBalanceStore()
-  
-  useEffect(() => {
-    if (wallet.publicKey) {
-      getUserSOLBalance(wallet.publicKey, connection)
-    }
-  }, [wallet.publicKey, connection, getUserSOLBalance]) */
-
   return (
     <div className="md:hero mx-auto p-4 md:pt-[1.5rem] md:pl-[10rem] flex flex-col md:flex-row justify-center items-center">
       <div className="md:hero-content flex flex-col">
         <div className='mt-6'>
-        <div className='text-sm font-normal align-bottom text-right text-white mt-4'>v{pkg.version}</div>
-        {/* <h1 className="audiowide-text text-center text-5xl md:pl-12 font-bold bg-clip-text text-white mb-4">
-          SPLForge
-        </h1> */}
         <Image
               src="/splforge-superlogo-nobackground.png"
               alt="SPLForge Logo"
