@@ -24,6 +24,7 @@
     "@solana/wallet-adapter-wallets": "^0.19.32",
     "@solana/web3.js": "^1.98.0",
     "@tailwindcss/typography": "^0.5.9",
+    "aws-sdk": "^2.1692.0",
     "axios": "^1.8.2",
     "bs58": "^6.0.0",
     "daisyui": "^1.24.3",

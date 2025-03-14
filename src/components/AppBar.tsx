@@ -47,6 +47,11 @@ export const AppBar: React.FC = () => {
             navigationStarts={() => setIsNavOpen(false)}
           />
           <NavElement
+            label="Token Dashboard"
+            href="/dashboard"
+            navigationStarts={() => setIsNavOpen(false)}
+          />
+          <NavElement
             label="Liquidity Pool"
             href="/liquiditypool"
             navigationStarts={() => setIsNavOpen(false)}
@@ -130,6 +135,11 @@ export const AppBar: React.FC = () => {
           <NavElement
             label="Token Creator"
             href="/tokencreator"
+            navigationStarts={() => setIsNavOpen(false)}
+          />
+          <NavElement
+            label="Token Dashboard"
+            href="/dashboard"
             navigationStarts={() => setIsNavOpen(false)}
           />
           <NavElement

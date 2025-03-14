@@ -3,6 +3,7 @@ import UploadFile from "./UploadFile";
 import { createToken } from "../utils/createToken";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { useNetworkConfiguration } from '../contexts/NetworkConfigurationProvider';
+import { dynamoDB } from "../utils/tokentable";
 
 export const TokenCreator = () => {
   const { networkConfiguration } = useNetworkConfiguration();
@@ -170,6 +171,28 @@ export const TokenCreator = () => {
     setTokenDescriptionError("");
   };
 
+  const storeToken = async (creator, mint, name, symbol, supply, transactionSignature, network) => {
+    const params = {
+      TableName: "Tokens",
+      Item: {
+        creator,
+        mint,
+        name,
+        symbol,
+        supply,
+        transactionSignature,
+        network,
+      },
+    };
+  
+    try {
+      await dynamoDB.put(params).promise();
+      console.log("Token stored successfully!");
+    } catch (error) {
+      console.error("Error storing token:", error);
+    }
+  };
+
   // Handle Create Token button click
   const handleCreateToken = async () => {
     if (!connected || !publicKey) {
@@ -236,6 +259,7 @@ export const TokenCreator = () => {
     // Handle the result
     if (result.success) {
       alert(`Token created successfully - See your transaction in: https://explorer.solana.com/tx/${result.transactionSignature}?cluster=${result.networkConfiguration}`);
+      await storeToken(publicKey.toBase58(),result.mintAddress,tokenName,tokenSymbol,tokenSupply,result.transactionSignature,result.networkConfiguration);
       resetForm();
     } else {
       alert(`Token creation failed: ${result.message}`);
@@ -245,7 +269,7 @@ export const TokenCreator = () => {
 
   return (
     <div id="webcrumbs">
-      <div className="bg-gradient-to-br from-indigo-950 via-purple-900 to-indigo-950 p-6 md:p-8 rounded-xl flex flex-col lg:flex-row gap-6">
+      <div className="p-6 md:p-8 rounded-xl flex flex-col lg:flex-row gap-6">
         {/* Left Side: Form */}
         <div className="w-full lg:w-1/2 bg-indigo-950/50 backdrop-blur-sm p-6 rounded-xl border border-indigo-800/30">
           <div className="flex flex-col gap-5">

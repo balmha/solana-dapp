@@ -264,6 +264,7 @@ export async function createToken(
       message: "Token created successfully!",
       networkConfiguration: networkConfiguration.toString(),
       transactionSignature: signature.toString(),
+      mintAddress: mintPublicKey.toString(),
     };
   } catch (error) {
     return {
