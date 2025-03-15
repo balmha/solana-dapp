@@ -1,7 +1,7 @@
 {
-  "name": "peer-dapp",
+  "name": "splforge-dapp",
   "version": "1.0.0",
-  "author": "Peer Wallet mantainers <maintainers@peerwallet.com>",
+  "author": "SPLForge mantainers <admin@splforge.xyz>",
   "license": "MIT",
   "private": false,
   "scripts": {

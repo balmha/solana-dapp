@@ -3,7 +3,6 @@ import { FC} from 'react';
 import Link from 'next/link';
 // Wallet
 import { useWallet, useConnection } from '@solana/wallet-adapter-react';
-import pkg from '../../../package.json';
 import Image from 'next/image';
 
 export const HomeView: FC = ({ }) => {
