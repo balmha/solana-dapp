@@ -9,24 +9,24 @@ import { AppBar } from '../components/AppBar';
 import { ContentContainer } from '../components/ContentContainer';
 import { Footer } from '../components/Footer';
 
-
 const App: FC<AppProps> = ({ Component, pageProps }) => {
-    return (
-        <>
-          <Head>
-            <title>Solana Token Creator | Create SPL Tokens easily - SPLForge</title>
-          </Head>
-          <ContextProvider>
-            <div className="flex flex-col h-screen">
-              <AppBar/>
-              <ContentContainer>
-                <Component {...pageProps} />
-              </ContentContainer>
-              <Footer/>
-            </div>
-          </ContextProvider>
-        </>
-    );
+  return (
+    <>
+      <Head>
+        <title>Solana Token Creator | Create SPL Tokens easily - SPLForge</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      </Head>
+      <ContextProvider>
+        <div className="w-full min-h-screen flex flex-col h-screen">
+          <AppBar />
+          <ContentContainer>
+            <Component {...pageProps} />
+          </ContentContainer>
+          <Footer />
+        </div>
+      </ContextProvider>
+    </>
+  );
 };
 
 export default App;

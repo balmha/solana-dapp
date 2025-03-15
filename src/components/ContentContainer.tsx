@@ -1,8 +1,9 @@
+import { FC } from 'react';
 interface Props {
   children: React.ReactNode;
 }
 
-export const ContentContainer: React.FC<Props> = ({ children }) => {
+export const ContentContainer: FC<Props> = ({ children }) => {
   return (
     <div className="flex-1 drawer h-full flex-col justify-between">
       <input id="my-drawer" type="checkbox" className="grow drawer-toggle" />
