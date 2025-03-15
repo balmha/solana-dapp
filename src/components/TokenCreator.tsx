@@ -656,15 +656,15 @@ export const TokenCreator = () => {
   <div className="flex flex-col gap-20 mb-10">
     <div className="flex flex-col gap-5">
       <h1 className="text-3xl font-bold">Solana SPL Token Creator</h1>
-      <p className="text-base">If you're seeking a convenient and effective method for generating SPL tokens on the Solana blockchain, our online SPL token creator offers an ideal solution. Our platform is user-friendly and intuitive, enabling users to tailor and launch their tokens within minutes.</p>
+      <p className="text-base">If you&apos;re seeking a convenient and effective method for generating SPL tokens on the Solana blockchain, our online SPL token creator offers an ideal solution. Our platform is user-friendly and intuitive, enabling users to tailor and launch their tokens within minutes.</p>
       <p className="text-base">Our SPL token creator eliminates the need for expertise in blockchain technology; anyone can effortlessly create and manage their tokens. Additionally, we prioritize high security and privacy for our users. All transactions and token information benefit from protection through our on-chain smart contract, ensuring the security of your assets throughout and after the process.</p>
       <p className="text-base">Our goal is to provide users with a seamless and efficient experience in crafting SPL tokens on the Solana blockchain. Through our online creator, you can personalize your tokens with unique logos, descriptions, and issuance details, making them distinct and reflective of your brand or project.</p>
       <p className="text-base">All transactions are final. We do not issue refunds. Please double-check before you create your token.</p>
     </div>
     <div className="flex flex-col gap-5 mb-10">
       <h1 className="text-3xl font-bold">Why Create Solana Tokens using SPLForge</h1>
-      <p className="text-base">Whether you're a seasoned developer or just starting out, our SPL Token Creator software is tailor-made for you. Experience the ease of quickly and securely generating tokens, saving valuable time and resources. What sets us apart is our unwavering commitment to exceptional support.</p>
-      <p className="text-base">Our dedicated team of experts is available 24/7 to address any inquiries or challenges you may encounter. Start your journey of creating and managing SPL tokens on Solana today with confidence, knowing that our reliable and secure online creator offers an unparalleled experience. You won't find a more user-friendly and efficient solution elsewhere!</p>
+      <p className="text-base">Whether you&apos;re a seasoned developer or just starting out, our SPL Token Creator software is tailor-made for you. Experience the ease of quickly and securely generating tokens, saving valuable time and resources. What sets us apart is our unwavering commitment to exceptional support.</p>
+      <p className="text-base">Our dedicated team of experts is available 24/7 to address any inquiries or challenges you may encounter. Start your journey of creating and managing SPL tokens on Solana today with confidence, knowing that our reliable and secure online creator offers an unparalleled experience. You won&apos;t find a more user-friendly and efficient solution elsewhere!</p>
     </div>
   </div>
 </div>
