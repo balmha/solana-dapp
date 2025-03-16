@@ -13,6 +13,7 @@ export const HomeView: FC = () => {
             alt="SPLForge Logo"
             width={432}
             height={324}
+            priority={true}
             className="object-contain w-full max-w-[300px] md:max-w-[432px]"
           />
         </div>
@@ -34,14 +35,14 @@ export const HomeView: FC = () => {
               href="/tokencreator"
               className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-3 px-6 rounded transition-colors"
             >
-              Create Token
+              Create Solana Tokens
             </Link>
-            <Link
+{/*             <Link
               href="/liquiditypool"
               className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-3 px-6 rounded transition-colors"
             >
               Create Pool
-            </Link>
+            </Link> */}
           </div>
         </div>
       </div>
