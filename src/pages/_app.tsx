@@ -30,12 +30,12 @@ const App: FC<AppProps> = ({ Component, pageProps }) => {
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="SPLForge" />
         <meta name="twitter:description" content="Create and Manage Tokens on Solana. Easily create SPL tokens and liquidity pools with SPLForge. No-code, simple, fast, and user-friendly." />
-        <meta name="twitter:image" content="https://splforge.xyz/splforge-superlogo-dark.png" />
+        <meta name="twitter:image" content="https://splforge.xyz/hammerhead-real.png" />
         <meta name="twitter:site" content="@splforge" />
         <meta name="twitter:creator" content="@splforge" />
       </Head>
       <ContextProvider>
-        <div className="w-full min-h-screen flex flex-col h-screen">
+        <div className="flex flex-col min-h-screen">
           <AppBar />
           <ContentContainer>
             <Component {...pageProps} />
