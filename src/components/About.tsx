@@ -66,7 +66,7 @@ export const About = () => {
           At SPLForge, we believe in democratizing token creation on the Solana blockchain. Our mission is to provide a secure, fast, and user-friendly platform that empowers individuals and projects to bring their ideas to life.
         </p>
         <p className="text-xl">
-          By leveraging Solana's high-speed, low-cost infrastructure, we aim to foster innovation and creativity within the blockchain ecosystem.
+          By leveraging Solana&apos;s high-speed, low-cost infrastructure, we aim to foster innovation and creativity within the blockchain ecosystem.
         </p>
       </div>
 
@@ -77,13 +77,13 @@ export const About = () => {
           <div className="flex flex-col gap-4">
             <h3 className="text-xl font-semibold">🚀 Fast & Efficient</h3>
             <p className="text-gray-300">
-              Create tokens in seconds with Solana's lightning-fast blockchain.
+              Create tokens in seconds with Solana&apos;s lightning-fast blockchain.
             </p>
           </div>
           <div className="flex flex-col gap-4">
             <h3 className="text-xl font-semibold">🔒 Secure & Trusted</h3>
             <p className="text-gray-300">
-              Your tokens are secured by Solana's robust smart contracts.
+              Your tokens are secured by Solana&apos;s robust smart contracts.
             </p>
           </div>
           <div className="flex flex-col gap-4">
