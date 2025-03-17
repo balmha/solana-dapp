@@ -6,7 +6,7 @@ const Liquidity: NextPage = (props) => {
   return (
     <div>
       <Head>
-        <title>Solana Token Creator | Create SPL Tokens easily - SPLForge</title>
+        <title>Create Solana Token | Create SPL Tokens easily - SPLForge</title>
         <meta
           name="description"
           content="Liquidity Pool Functionality"

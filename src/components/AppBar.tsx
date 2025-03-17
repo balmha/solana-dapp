@@ -33,6 +33,7 @@ export const AppBar: FC = () => {
           <NavElement label="Token Creator" href="/tokencreator" navigationStarts={() => setIsNavOpen(false)} />
           <NavElement label="Token Dashboard" href="/dashboard" navigationStarts={() => setIsNavOpen(false)} />
           <NavElement label="Liquidity Pool" href="/liquiditypool" navigationStarts={() => setIsNavOpen(false)} />
+          <NavElement label="About Us" href="/about" navigationStarts={() => setIsNavOpen(false)} />
         </div>
       </div>
 
@@ -94,6 +95,7 @@ export const AppBar: FC = () => {
           <NavElement label="Token Creator" href="/tokencreator" navigationStarts={() => setIsNavOpen(false)} />
           <NavElement label="Token Dashboard" href="/dashboard" navigationStarts={() => setIsNavOpen(false)} />
           <NavElement label="Liquidity Pool" href="/liquiditypool" navigationStarts={() => setIsNavOpen(false)} />
+          <NavElement label="About Us" href="/about" navigationStarts={() => setIsNavOpen(false)} />
         </div>
       </div>
     </div>

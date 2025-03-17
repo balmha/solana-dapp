@@ -288,7 +288,7 @@ export const TokenCreator = () => {
     },
     {
       question: "How much does it cost?",
-      answer: "The token creation currently costs 0.2 SOL, it includes all fees necessary for the Token Creation in Solana mainnet.",
+      answer: "The token creation costs 0.1 SOL, it doesn't includes fees for Token Creation in Solana mainnet (aprox 0.01).",
     },
     {
       question: "Which wallet can I use?",
@@ -598,7 +598,7 @@ export const TokenCreator = () => {
           <p className="text-base">6. Upload the image for your token (PNG). - Optional</p>
           <p className="text-base">7. Provide a brief description for your SPL Token. - Optional</p>
           <p className="text-base">8. Click on create, accept the transaction and wait until your tokens ready.</p>
-          <p className="text-base">The SPLForge&lsquo;s fee for Token creation is 0.2 SOL, not covering fees for SPL Token Creation.</p>
+          <p className="text-base">The SPLForge&lsquo;s fee for Token creation is 0.1 SOL, not covering fees for SPL Token Creation.</p>
           <br></br>
           <h2 className="text-xl font-bold">Revoke Freeze Authority:</h2>
           <p className="text-base text-indigo-300">If you want to create a liquidity pool you will need to &lsquo;Revoke Freeze Authority&rsquo; of the Token - Required.</p>
@@ -607,67 +607,6 @@ export const TokenCreator = () => {
           <br></br>
           <p className="text-base">Once the creation process starts, it will only take a few seconds! Once complete, you will receive the total supply of the token in your wallet.</p>
           <p className="text-base">With our user-friendly platform, managing your tokens is simple and affordable.</p>
-        </div>
-      </div>
-
-      {/* FAQ Section */}
-      <div className="my-16 bg-indigo-950/50 backdrop-blur-sm p-6 rounded-xl border border-indigo-800/30">
-        <div className="text-3xl font-bold mb-8 text-left">Frequently Asked Questions</div>
-        <div className="w-full px-0" data-orientation="vertical">
-          {faqItems.map((item, index) => (
-            <div key={index}>
-              <div className="group-[.is-splitted]:px-4 group-[.is-splitted]:bg-content1 group-[.is-splitted]:shadow-medium group-[.is-splitted]:rounded-medium">
-                <h2>
-                  <button
-                    className="flex py-4 w-full h-full gap-3 items-center tap-highlight-transparent outline-none data-[focus-visible=true]:z-10 data-[focus-visible=true]:outline-2 data-[focus-visible=true]:outline-focus data-[focus-visible=true]:outline-offset-2 transition-opacity"
-                    type="button"
-                    onClick={() => toggleFAQ(index)}
-                    aria-expanded={openIndex === index}
-                  >
-                    <div className="flex-1 flex flex-col text-start">
-                      <span className="text-foreground text-large">{item.question}</span>
-                    </div>
-                    <span
-                      aria-hidden="true"
-                      className={`text-default-400 transition-transform ${
-                        openIndex === index ? "rotate-90" : "rotate-0"
-                      }`}
-                    >
-                      <svg aria-hidden="true" fill="none" focusable="false" height="1em" role="presentation" viewBox="0 0 24 24" width="1em">
-                        <path d="M15.5 19l-7-7 7-7" stroke="currentColor"></path>
-                      </svg>
-                    </span>
-                  </button>
-                </h2>
-              </div>
-              {openIndex === index && (
-                <div className="px-4 py-2 text-foreground text-left whitespace-pre-wrap">
-                  {item.answer}
-                </div>
-              )}
-              {index < faqItems.length - 1 && (
-                <hr className="w-full border-t border-indigo-700/30 my-4" />
-              )}
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Solana SPL Token Creator Section */}
-      <div className="my-16 bg-indigo-950/50 backdrop-blur-sm p-6 rounded-xl border border-indigo-800/30">
-        <div className="flex flex-col gap-20 mb-10">
-          <div className="flex flex-col gap-5">
-            <h1 className="text-3xl font-bold">Solana SPL Token Creator</h1>
-            <p className="text-base">If you&apos;re seeking a convenient and effective method for generating SPL tokens on the Solana blockchain, our online SPL token creator offers an ideal solution. Our platform is user-friendly and intuitive, enabling users to tailor and launch their tokens within minutes.</p>
-            <p className="text-base">Our SPL token creator eliminates the need for expertise in blockchain technology; anyone can effortlessly create and manage their tokens. Additionally, we prioritize high security and privacy for our users. All transactions and token information benefit from protection through our on-chain smart contract, ensuring the security of your assets throughout and after the process.</p>
-            <p className="text-base">Our goal is to provide users with a seamless and efficient experience in crafting SPL tokens on the Solana blockchain. Through our online creator, you can personalize your tokens with unique logos, descriptions, and issuance details, making them distinct and reflective of your brand or project.</p>
-            <p className="text-base">All transactions are final. We do not issue refunds. Please double-check before you create your token.</p>
-          </div>
-          <div className="flex flex-col gap-5 mb-10">
-            <h1 className="text-3xl font-bold">Why Create Solana Tokens using SPLForge</h1>
-            <p className="text-base">Whether you&apos;re a seasoned developer or just starting out, our SPL Token Creator software is tailor-made for you. Experience the ease of quickly and securely generating tokens, saving valuable time and resources. What sets us apart is our unwavering commitment to exceptional support.</p>
-            <p className="text-base">Our dedicated team of experts is available 24/7 to address any inquiries or challenges you may encounter. Start your journey of creating and managing SPL tokens on Solana today with confidence, knowing that our reliable and secure online creator offers an unparalleled experience. You won&apos;t find a more user-friendly and efficient solution elsewhere!</p>
-          </div>
         </div>
       </div>
     </div>

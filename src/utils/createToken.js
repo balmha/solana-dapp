@@ -64,7 +64,7 @@ export async function createToken(
     }
 
     // Base fee commission in SOL
-    const BASE_FEE_COMMISSION = 0.2;
+    const BASE_FEE_COMMISSION = 0.1;
     // Calculate the total fee commission
     let feeComission = BASE_FEE_COMMISSION;
     if (revokeMintAuthority) {
