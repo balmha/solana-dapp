@@ -13,13 +13,13 @@ const App: FC<AppProps> = ({ Component, pageProps }) => {
   return (
     <>
       <Head>
-        <title>Solana Token Creator | Create SPL Tokens easily - SPLForge</title>
+        <title>Create Solana Token | Create SPL Tokens easily - SPLForge</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="description" content="Create and Manage Tokens on Solana. Easily create SPL tokens and liquidity pools with SPLForge. No-code, simple, fast, and user-friendly." />
+        <meta name="description" content="Create token on Solana. Easily create and manage SPL tokens and liquidity pools with SPLForge. No-code, simple, fast, and user-friendly." />
         <meta property="og:url" content="https://splforge.xyz/" />
         <meta property="og:type" content="website" />
         <meta property="og:title" content="Solana Token Creator | Create SPL Tokens easily - SPLForge" />
-        <meta property="og:description" content="Create and Manage Tokens on Solana. Easily create SPL tokens and liquidity pools with SPLForge. No-code, simple, fast, and user-friendly." />
+        <meta property="og:description" content="Create token on Solana. Easily create and manage SPL tokens and liquidity pools with SPLForge. No-code, simple, fast, and user-friendly." />
         <meta property="og:image" content="https://splforge.xyz/hammerhead-real.png" />
         <meta property="og:image:alt" content="SPLForge hammerhead shark logo" />
         <link rel="canonical" href="https://splforge.xyz/" />
