@@ -15,7 +15,7 @@ const jsonLd: WithContext<WebApplication> = {
   "@context": "https://schema.org",
   "@type": "WebApplication",
   name: "SPLForge",
-  description: "Create and Manage Tokens on Solana. Easily create SPL tokens and liquidity pools with SPLForge. No-code, simple, fast, and user-friendly.",
+  description: "Create token on Solana. Easily create and manage SPL tokens and liquidity pools with SPLForge. No-code, simple, fast, and user-friendly.",
   url: "https://splforge.xyz/",
   applicationCategory: "Finance",
   applicationSubCategory: "Cryptocurrency",
@@ -70,7 +70,7 @@ const App: FC<AppProps> = ({ Component, pageProps }) => {
         <link rel="apple-touch-icon" sizes="180x180" href="https://splforge.xyz/apple-touch-icon.png" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="SPLForge" />
-        <meta name="twitter:description" content="Create and Manage Tokens on Solana. Easily create SPL tokens and liquidity pools with SPLForge. No-code, simple, fast, and user-friendly." />
+        <meta name="twitter:description" content="Create token on Solana. Easily create and manage SPL tokens and liquidity pools with SPLForge. No-code, simple, fast, and user-friendly." />
         <meta name="twitter:image" content="https://splforge.xyz/hammerhead-real.png" />
         <meta name="twitter:site" content="@splforge" />
         <meta name="twitter:creator" content="@splforge" />
