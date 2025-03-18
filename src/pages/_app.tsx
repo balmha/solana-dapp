@@ -46,6 +46,13 @@ const jsonLd: WithContext<WebApplication> = {
 const App: FC<AppProps> = ({ Component, pageProps }) => {
   return (
     <>
+      <Script
+        id="webapplication-schema"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(jsonLd),
+        }}
+      />
       <Head>
         <title>Create Solana Token | Create SPL Tokens easily - SPLForge</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -67,13 +74,6 @@ const App: FC<AppProps> = ({ Component, pageProps }) => {
         <meta name="twitter:image" content="https://splforge.xyz/hammerhead-real.png" />
         <meta name="twitter:site" content="@splforge" />
         <meta name="twitter:creator" content="@splforge" />
-        <Script
-          id="webapplication-schema"
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(jsonLd),
-          }}
-        />
       </Head>
       <ContextProvider>
         <div className="flex flex-col min-h-screen">
