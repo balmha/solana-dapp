@@ -8,6 +8,40 @@ import { ContextProvider } from '../contexts/ContextProvider';
 import { AppBar } from '../components/AppBar';
 import { ContentContainer } from '../components/ContentContainer';
 import { Footer } from '../components/Footer';
+import Script from "next/script";
+import { WebApplication, WithContext } from "schema-dts";
+
+const jsonLd: WithContext<WebApplication> = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  name: "SPLForge",
+  description: "Create and Manage Tokens on Solana. Easily create SPL tokens and liquidity pools with SPLForge. No-code, simple, fast, and user-friendly.",
+  url: "https://splforge.xyz/",
+  applicationCategory: "Finance",
+  applicationSubCategory: "Cryptocurrency",
+  operatingSystem: "All",
+  browserRequirements: "Requires JavaScript. Requires modern web browser.",
+  image: "https://splforge.xyz/hammerhead-real.png",
+  inLanguage: "en",
+  offers: {
+    "@type": "Offer",
+    price: "0",
+    priceCurrency: "USD",
+    availability: "https://schema.org/InStock",
+  },
+  potentialAction: {
+    "@type": "ViewAction",
+    target: "https://splforge.xyz/",
+  },
+  sameAs: [
+    "https://twitter.com/splforge",
+    "https://linkedin.com/company/splforge",
+    "https://www.facebook.com/profile.php?id=61574385838648",
+    "https://www.instagram.com/splforge/",
+    "https://www.youtube.com/@SPLForge",
+    "https://www.linkedin.com/in/splforge/",
+  ]
+};
 
 const App: FC<AppProps> = ({ Component, pageProps }) => {
   return (
@@ -33,6 +67,13 @@ const App: FC<AppProps> = ({ Component, pageProps }) => {
         <meta name="twitter:image" content="https://splforge.xyz/hammerhead-real.png" />
         <meta name="twitter:site" content="@splforge" />
         <meta name="twitter:creator" content="@splforge" />
+        <Script
+          id="webapplication-schema"
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(jsonLd),
+          }}
+        />
       </Head>
       <ContextProvider>
         <div className="flex flex-col min-h-screen">
