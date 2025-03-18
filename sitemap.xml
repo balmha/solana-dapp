@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
-        <loc>https://splforge.xyz</loc>
+        <loc>https://splforge.xyz/</loc>
     </url>
-    <url>
+    <!-- <url>
         <loc>https://splforge.xyz/about</loc>
     </url>
     <url>
@@ -14,5 +14,5 @@
     </url>
     <url>
         <loc>https://splforge.xyz/liquiditypool</loc>
-    </url>
+    </url> -->
 </urlset>
