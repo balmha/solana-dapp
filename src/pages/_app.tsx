@@ -35,11 +35,11 @@ const jsonLd: WithContext<WebApplication> = {
   },
   sameAs: [
     "https://twitter.com/splforge",
-    "https://linkedin.com/company/splforge",
     "https://www.facebook.com/profile.php?id=61574385838648",
     "https://www.instagram.com/splforge/",
     "https://www.youtube.com/@SPLForge",
     "https://www.linkedin.com/in/splforge/",
+    "https://dev.to/splforge",
   ]
 };
 
