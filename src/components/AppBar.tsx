@@ -1,11 +1,11 @@
 import { FC } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import dynamic from 'next/dynamic';
 import React, { useState } from 'react';
 import { useAutoConnect } from '../contexts/AutoConnectProvider';
 import NetworkSwitcher from './NetworkSwitcher';
 import NavElement from './nav-element';
+import {Toaster} from 'react-hot-toast';
 
 const WalletMultiButtonDynamic = dynamic(
   async () => (await import('@solana/wallet-adapter-react-ui')).WalletMultiButton,
@@ -38,7 +38,7 @@ export const AppBar: FC = () => {
       </div>
 
       {/* Horizontal Div for Connect & Settings */}
-      <div className="md:flex fixed top-0 right-0 w-full md:w-[calc(100%-12rem)] h-14 bg-black bg-opacity-50 flex items-center justify-end shadow-lg z-10 px-4">
+      <div className="md:flex fixed top-0 right-0 w-full md:w-[calc(100%-12rem)] h-14 bg-black bg-opacity-50 flex items-center justify-end shadow-lg px-4">
         {/* Wallet & Settings */}
         <div className="flex items-center gap-2">
           {/* Settings Dropdown */}

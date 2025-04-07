@@ -5,6 +5,7 @@ import { createToken } from "../utils/createToken";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { useNetworkConfiguration } from '../contexts/NetworkConfigurationProvider';
 import { dynamoDB } from "../utils/tokentable";
+import toast from "react-hot-toast";
 
 export const TokenCreator = () => {
   
@@ -201,7 +202,7 @@ export const TokenCreator = () => {
   // Handle Create Token button click
   const handleCreateToken = async () => {
     if (!connected || !publicKey) {
-      alert("Please connect your wallet");
+      toast.error("Please connect your wallet");
       return;
     }
 
@@ -263,11 +264,11 @@ export const TokenCreator = () => {
 
     // Handle the result
     if (result.success) {
-      alert(`Token created successfully - See your transaction in: https://explorer.solana.com/tx/${result.transactionSignature}?cluster=${result.networkConfiguration}`);
+      toast.success(`Token created successfully.\nSee your transaction in:\nhttps://explorer.solana.com/tx/${result.transactionSignature}?cluster=${result.networkConfiguration}`);
       await storeToken(publicKey.toBase58(),result.mintAddress,tokenName,tokenSymbol,tokenSupply,result.transactionSignature,result.networkConfiguration);
       resetForm();
     } else {
-      alert(`Token creation failed: ${result.message}`);
+      toast.error(`Token creation failed: ${result.message}`);
       resetForm();
     }
   };

@@ -10,6 +10,7 @@ import { ContentContainer } from '../components/ContentContainer';
 import { Footer } from '../components/Footer';
 import Script from "next/script";
 import { WebApplication, WithContext } from "schema-dts";
+import { Toaster } from 'react-hot-toast';
 
 const jsonLd: WithContext<WebApplication> = {
   "@context": "https://schema.org",
@@ -84,6 +85,16 @@ const App: FC<AppProps> = ({ Component, pageProps }) => {
           <Footer />
         </div>
       </ContextProvider>
+      <Toaster 
+        position="top-center"
+        toastOptions={{
+          style: {
+            maxWidth: '500px',
+            wordBreak: 'break-word',
+            whiteSpace: 'pre-wrap'
+          }
+        }}
+      />
     </>
   );
 };
