@@ -17,7 +17,7 @@
     "jsx": "preserve",
     "incremental": true
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src/utils/.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src/utils/.js", "src/utils/createToken.js"],
   "exclude": ["node_modules", ".next",],
   "ts-node": {
     "require": ["tsconfig-paths/register"],

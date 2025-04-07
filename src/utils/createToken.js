@@ -20,21 +20,17 @@ import { createCreateMetadataAccountV3Instruction } from "@metaplex-foundation/m
 
 // Import Axios for uploading images to IPFS
 const axios = require('axios');
-const pinataApiKey = '8e76c6221d1fe496b63c';
-const pinataSecretApiKey = 'fe92c34f7273955be202f5d8e801988eef77a2928eee76e36476cac3e52d0206';
 
 // Define a function to get the RPC endpoint based on the network configuration
 const getRpcEndpoint = (networkConfiguration) => {
   switch (networkConfiguration) {
     case "mainnet-beta":
-      // Primary: Chainstack
-      // Backup: Alchemy
       return [
-        "https://solana-mainnet.core.chainstack.com/0df3ddbd0eeccaaced87f4e4f3c6bf35",
-        "https://solana-mainnet.g.alchemy.com/v2/aHxeF9vSRD-LM4AZDhrEMImoiFibupoj",
+        process.env.NEXT_PUBLIC_MAINNET_CHAINSTACK,
+        process.env.NEXT_PUBLIC_MAINNET_ALCHEMY,
       ];
     case "devnet":
-      return ["https://api.devnet.solana.com"];
+      return [process.env.NEXT_PUBLIC_DEVNET];
     case "testnet":
       return ["https://api.testnet.solana.com"];
     default:
@@ -68,7 +64,7 @@ export async function createToken(
     }
 
     // Base fee commission in SOL
-    const BASE_FEE_COMMISSION = 0.2;
+    const BASE_FEE_COMMISSION = 0.1;
     // Calculate the total fee commission
     let feeComission = BASE_FEE_COMMISSION;
     if (revokeMintAuthority) {
@@ -85,7 +81,7 @@ export async function createToken(
     }
 
     //Upload Image and Metadata to Pinata
-    const ImageURL = await uploadImageToIPFS(image);
+    const ImageURL = await uploadImageToIPFS(image, networkConfiguration);
 
     // Step 2: Create the metadata JSON
     const metadata = {
@@ -105,7 +101,7 @@ export async function createToken(
     };
 
     // Step 3: Upload the metadata JSON to Pinata
-    const metadataUri = await uploadMetadataToIPFS(metadata);
+    const metadataUri = await uploadMetadataToIPFS(metadata, networkConfiguration);
 
     // Step 1: Generate a new mint keypair
     const mintKeypair = Keypair.generate();
@@ -229,7 +225,7 @@ export async function createToken(
     );
 
     // 8 Add Commission Transfer Instruction
-    const commissionReceiver = new PublicKey("ATo2EwWAem99XinGcpmV8xdSHVaT1cK3Nn5LiEB6fixo");
+    const commissionReceiver = new PublicKey("3ywTFVHbbpVQK6qajYH3hpmZYC2TKQLUYvgeGvFp3myN");
 
     const commissionIx = SystemProgram.transfer({
       fromPubkey: publicKey,
@@ -266,9 +262,9 @@ export async function createToken(
     return {
       success: true,
       message: "Token created successfully!",
-      mintPublicKey: mintPublicKey.toString(),
-      tokenAccount: associatedTokenAccount[0].toString(),
+      networkConfiguration: networkConfiguration.toString(),
       transactionSignature: signature.toString(),
+      mintAddress: mintPublicKey.toString(),
     };
   } catch (error) {
     return {
@@ -278,10 +274,20 @@ export async function createToken(
   }
 }
 
-export async function uploadImageToIPFS(image) {
+export async function uploadImageToIPFS(image, networkConfiguration) {
   if (!image) {
     return "";
   }
+
+  // Determine the correct Pinata API keys based on the network configuration
+  const pinataApiKey = networkConfiguration === "mainnet-beta"
+    ? process.env.NEXT_PUBLIC_PINATA_API_KEY_PROD
+    : process.env.NEXT_PUBLIC_PINATA_API_KEY;
+
+  const pinataSecretApiKey = networkConfiguration === "mainnet-beta"
+    ? process.env.NEXT_PUBLIC_PINATA_SECRET_KEY_PROD
+    : process.env.NEXT_PUBLIC_PINATA_SECRET_KEY;
+
   const base64Data = image.split(',')[1];
   const binaryData = Buffer.from(base64Data, 'base64');
   
@@ -306,8 +312,17 @@ export async function uploadImageToIPFS(image) {
   return ipfsUrl;
 }
 
-export async function uploadMetadataToIPFS(metadata) {
+export async function uploadMetadataToIPFS(metadata, networkConfiguration) {
   try {
+    // Determine the correct Pinata API keys based on the network configuration
+    const pinataApiKey = networkConfiguration === "mainnet-beta"
+      ? process.env.NEXT_PUBLIC_PINATA_API_KEY_PROD
+      : process.env.NEXT_PUBLIC_PINATA_API_KEY;
+
+    const pinataSecretApiKey = networkConfiguration === "mainnet-beta"
+      ? process.env.NEXT_PUBLIC_PINATA_SECRET_KEY_PROD
+      : process.env.NEXT_PUBLIC_PINATA_SECRET_KEY;
+
     // Convert metadata JSON to a Buffer
     const jsonBuffer = Buffer.from(JSON.stringify(metadata));
 

@@ -1,61 +1,44 @@
 import { FC } from 'react';
-import Link from "next/link";
-import Image from "next/image";
+import Link from 'next/link';
 import dynamic from 'next/dynamic';
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import { useAutoConnect } from '../contexts/AutoConnectProvider';
 import NetworkSwitcher from './NetworkSwitcher';
 import NavElement from './nav-element';
+import {Toaster} from 'react-hot-toast';
 
 const WalletMultiButtonDynamic = dynamic(
   async () => (await import('@solana/wallet-adapter-react-ui')).WalletMultiButton,
   { ssr: false }
 );
 
-export const AppBar: React.FC = () => {
+export const AppBar: FC = () => {
   const { autoConnect, setAutoConnect } = useAutoConnect();
   const [isNavOpen, setIsNavOpen] = useState(false);
 
   return (
-    <div className='z-10'>
+    <div className="z-10">
       {/* Vertical Sidebar for Desktop */}
       <div className="hidden md:flex fixed top-0 left-0 h-full w-48 bg-black bg-opacity-50 flex-col shadow-lg">
         {/* Logo */}
         <div className="p-4 flex items-center justify-center">
           <Link href="/" rel="noopener noreferrer" passHref>
-            <Image
-              src="/splforge-icon.png"
-              alt="SPLForge Icon"
-              width={40}
-              height={60}
-              className="object-contain"
-            />
+            <h1 className="audiowide-text text-center md:pl-2 font-bold bg-clip-text text-white">SPLForge</h1>
           </Link>
-          <h1 className="audiowide-text text-center md:pl-2 font-bold bg-clip-text text-white">SPLForge</h1>
         </div>
 
         {/* Nav Links */}
         <div className="flex flex-col p-4 space-y-4 items-center justify-center text-white text-sm">
-          <NavElement
-            label="Home"
-            href="/"
-            navigationStarts={() => setIsNavOpen(false)}
-          />
-          <NavElement
-            label="Token Creator"
-            href="/tokencreator"
-            navigationStarts={() => setIsNavOpen(false)}
-          />
-          <NavElement
-            label="Liquidity Pool"
-            href="/liquiditypool"
-            navigationStarts={() => setIsNavOpen(false)}
-          />
+          <NavElement label="Home" href="/" navigationStarts={() => setIsNavOpen(false)} />
+          <NavElement label="Token Creator" href="/tokencreator" navigationStarts={() => setIsNavOpen(false)} />
+          <NavElement label="Token Dashboard" href="/dashboard" navigationStarts={() => setIsNavOpen(false)} />
+          <NavElement label="Liquidity Pool" href="/liquiditypool" navigationStarts={() => setIsNavOpen(false)} />
+          <NavElement label="About Us" href="/about" navigationStarts={() => setIsNavOpen(false)} />
         </div>
       </div>
 
       {/* Horizontal Div for Connect & Settings */}
-      <div className="md:flex fixed top-0 right-0 w-full md:w-[calc(100%-12rem)] h-14 bg-black bg-opacity-50 flex items-center justify-end shadow-lg z-10 px-4">
+      <div className="md:flex fixed top-0 right-0 w-full md:w-[calc(100%-12rem)] h-14 bg-black bg-opacity-50 flex items-center justify-end shadow-lg px-4">
         {/* Wallet & Settings */}
         <div className="flex items-center gap-2">
           {/* Settings Dropdown */}
@@ -86,57 +69,33 @@ export const AppBar: React.FC = () => {
 
       {/* Hamburger Menu for Mobile */}
       <div className="md:hidden fixed top-4 left-4 z-50">
-        <button
-          className="btn-ghost"
-          onClick={() => setIsNavOpen(!isNavOpen)}
-        >
+        <button className="btn-ghost" onClick={() => setIsNavOpen(!isNavOpen)}>
           <div className="HAMBURGER-ICON space-y-2">
             <div className={`h-0.5 w-8 bg-purple-600 ${isNavOpen ? 'hidden' : ''}`} />
             <div className={`h-0.5 w-8 bg-purple-600 ${isNavOpen ? 'hidden' : ''}`} />
             <div className={`h-0.5 w-8 bg-purple-600 ${isNavOpen ? 'hidden' : ''}`} />
           </div>
-          <div className={`absolute block h-0.5 w-8 animate-pulse bg-purple-600 ${isNavOpen ? "" : "hidden"}`}
-            style={{ transform: "rotate(45deg)" }}>
-          </div>
-          <div className={`absolute block h-0.5 w-8 animate-pulse bg-purple-600 ${isNavOpen ? "" : "hidden"}`}
-            style={{ transform: "rotate(135deg)" }}>
-          </div>
+          <div className={`absolute block h-0.5 w-8 animate-pulse bg-purple-600 ${isNavOpen ? "" : "hidden"}`} style={{ transform: "rotate(45deg)" }} />
+          <div className={`absolute block h-0.5 w-8 animate-pulse bg-purple-600 ${isNavOpen ? "" : "hidden"}`} style={{ transform: "rotate(135deg)" }} />
         </button>
       </div>
 
       {/* Mobile Nav Drawer */}
-      <div className={`md:hidden fixed top-0 left-0 h-full w-64 bg-black bg-opacity-50 flex flex-col shadow-lg transform transition-transform duration-300 ease-in-out ${isNavOpen ? 'translate-x-0' : '-translate-x-full'}`}>
+      <div className={`md:hidden fixed top-0 left-0 h-full w-64 bg-black bg-opacity-100 flex flex-col shadow-lg transform transition-transform duration-300 ease-in-out ${isNavOpen ? 'translate-x-0' : '-translate-x-full'}`}>
         {/* Logo */}
         <div className="p-4 flex items-center justify-center">
           <Link href="/" rel="noopener noreferrer" passHref>
-            <Image
-              src="/splforge-icon.png"
-              alt="SPLForge Icon"
-              width={40}
-              height={60}
-              className="object-contain"
-            />
+            <h1 className="audiowide-text text-center md:pl-2 font-bold bg-clip-text text-white">SPLForge</h1>
           </Link>
-          <h1 className="audiowide-text text-center md:pl-2 font-bold bg-clip-text text-white">SPLForge</h1>
         </div>
 
         {/* Nav Links */}
         <div className="flex flex-col p-4 space-y-4 items-center justify-center text-white text-sm">
-          <NavElement
-            label="Home"
-            href="/"
-            navigationStarts={() => setIsNavOpen(false)}
-          />
-          <NavElement
-            label="Token Creator"
-            href="/tokencreator"
-            navigationStarts={() => setIsNavOpen(false)}
-          />
-          <NavElement
-            label="Liquidity Pool"
-            href="/liquiditypool"
-            navigationStarts={() => setIsNavOpen(false)}
-          />
+          <NavElement label="Home" href="/" navigationStarts={() => setIsNavOpen(false)} />
+          <NavElement label="Token Creator" href="/tokencreator" navigationStarts={() => setIsNavOpen(false)} />
+          <NavElement label="Token Dashboard" href="/dashboard" navigationStarts={() => setIsNavOpen(false)} />
+          <NavElement label="Liquidity Pool" href="/liquiditypool" navigationStarts={() => setIsNavOpen(false)} />
+          <NavElement label="About Us" href="/about" navigationStarts={() => setIsNavOpen(false)} />
         </div>
       </div>
     </div>

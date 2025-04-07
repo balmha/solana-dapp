@@ -6,7 +6,7 @@ const Home: NextPage = (props) => {
   return (
     <div>
       <Head>
-        <title>SPLForge</title>
+        <title>Create Solana Token | Create SPL Tokens easily - SPLForge</title>
         <meta
           name="description"
           content="Home"

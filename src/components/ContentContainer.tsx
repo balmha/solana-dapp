@@ -1,13 +1,13 @@
+import { FC } from 'react';
+
 interface Props {
   children: React.ReactNode;
 }
 
-export const ContentContainer: React.FC<Props> = ({ children }) => {
+export const ContentContainer: FC<Props> = ({ children }) => {
   return (
-    <div className="flex-1 drawer h-52 flex-col justify-between">
-      <input id="my-drawer" type="checkbox" className="grow drawer-toggle" />
-      {/* Main Content */}
-      <div className="items-center drawer-content flex flex-col justify-between ml-0 md:ml-48">
+    <div className="flex-1 ml-0 md:ml-48 overflow-y-auto h-[calc(100vh-3.5rem)]">
+      <div className="p-4 2xl:mr-96">
         {children}
       </div>
     </div>

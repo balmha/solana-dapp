@@ -1,20 +1,20 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import { LiquidityView } from "../views";
+import { AboutView } from "../views";
 
-const Liquidity: NextPage = (props) => {
+const About: NextPage = (props) => {
   return (
     <div>
       <Head>
         <title>Create Solana Token | Create SPL Tokens easily - SPLForge</title>
         <meta
           name="description"
-          content="Liquidity Pool Functionality"
+          content="About us"
         />
       </Head>
-      <LiquidityView />
+      <AboutView />
     </div>
   );
 };
 
-export default Liquidity;
+export default About;
