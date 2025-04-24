@@ -41,6 +41,8 @@ const jsonLd: WithContext<WebApplication> = {
     "https://www.youtube.com/@SPLForge",
     "https://www.linkedin.com/in/splforge/",
     "https://dev.to/splforge",
+    "https://www.reddit.com/user/Patient-Cheetah-8781/",
+    "https://www.reddit.com/user/SPLForge/",
   ]
 };
 
