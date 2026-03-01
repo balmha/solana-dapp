@@ -6,11 +6,12 @@ const Dashboard: NextPage = (props) => {
   return (
     <div className="w-full h-full">
       <Head>
-        <title>Create Solana Token | Create SPL Tokens easily - SPLForge</title>
+        <title>Token Dashboard | SPLForge</title>
         <meta
           name="description"
-          content="Token Dashboard Functionality"
+          content="Manage your Solana tokens in the SPLForge Token Dashboard."
         />
+        <meta name="robots" content="noindex,nofollow" />
       </Head>
       <DashboardView />
     </div>

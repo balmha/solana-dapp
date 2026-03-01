@@ -19,7 +19,7 @@ const NavElement = ({
     as,
     scroll,
     disabled,
-    navigationStarts = () => {},
+    navigationStarts = () => { },
 }: NavElementProps) => {
     const router = useRouter();
     const isActive = href === router.asPath || (as && as === router.asPath);
@@ -42,7 +42,7 @@ const NavElement = ({
                     className={cn( // Smaller text size
                         isActive
                             ? 'text-white bg-gradient-to-l bg-fuchsia-600/20 px-2 py-1 rounded-btn' // Highlight effect for active link
-                            : 'text-secondary', // Default and hover styles
+                            : 'text-gray-400 hover:text-white transition-colors duration-200', // Default and hover styles
                     )}
                 >
                     {label}

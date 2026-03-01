@@ -6,11 +6,18 @@ const Creator: NextPage = (props) => {
   return (
     <div>
       <Head>
-        <title>Create Solana Token | Create SPL Tokens easily - SPLForge</title>
+        <title>Create SPL Token | Fastest Way to Deploy Solana Tokens - SPLForge</title>
         <meta
           name="description"
-          content="Token Creator Functionality"
+          content="Use our Solana token creator to deploy your coin in seconds. It's the fastest way to deploy Solana tokens and manage your liquidity."
         />
+        <meta property="og:title" content="Create SPL Token | Fastest Way to Deploy Solana Tokens - SPLForge" />
+        <meta property="og:description" content="Use our Solana token creator to deploy your coin in seconds. It's the fastest way to deploy Solana tokens and manage your liquidity." />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://splforge.xyz/tokencreator" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Create SPL Token | Fastest Way to Deploy Solana Tokens - SPLForge" />
+        <meta name="twitter:description" content="Use our Solana token creator to deploy your coin in seconds. It's the fastest way to deploy Solana tokens and manage your liquidity." />
       </Head>
       <CreatorView />
     </div>

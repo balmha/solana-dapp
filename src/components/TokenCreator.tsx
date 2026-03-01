@@ -6,15 +6,17 @@ import { useWallet } from "@solana/wallet-adapter-react";
 import { useNetworkConfiguration } from '../contexts/NetworkConfigurationProvider';
 import { dynamoDB } from "../utils/tokentable";
 import toast from "react-hot-toast";
+import { tokenCreatorInstructions } from "../content/instructions";
 
 export const TokenCreator = () => {
-  
+
   const { networkConfiguration } = useNetworkConfiguration();
   const { connected, publicKey, signTransaction } = useWallet();
   const [toggleEnabled, setToggleEnabled] = useState(false);
   const [showMintInfo, setMintInfo] = useState(false);
   const [showFreezeInfo, setFreezeInfo] = useState(false);
   const [showMoreOptions, setShowMoreOptions] = useState(false);
+  const [isCreating, setIsCreating] = useState(false); // Track transaction state
 
   // State for form inputs
   const [tokenName, setTokenName] = useState("");
@@ -69,7 +71,7 @@ export const TokenCreator = () => {
 
   const handleTokenSymbolChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-  
+
     // Validate symbol
     if (!value) {
       setTokenSymbolError("Token symbol is required.");
@@ -78,7 +80,7 @@ export const TokenCreator = () => {
     } else {
       setTokenSymbolError("");
     }
-  
+
     // Update the state with the new value
     setTokenSymbol(value);
   };
@@ -190,7 +192,7 @@ export const TokenCreator = () => {
         network,
       },
     };
-  
+
     try {
       await dynamoDB.put(params).promise();
       console.log("Token stored successfully!");
@@ -245,6 +247,8 @@ export const TokenCreator = () => {
       return;
     }
 
+    setIsCreating(true); // Disable the button and show loading spinner
+
     // Call the createToken function
     const result = await createToken(
       networkConfiguration,
@@ -264,42 +268,18 @@ export const TokenCreator = () => {
 
     // Handle the result
     if (result.success) {
-      toast.success(`Token created successfully.\nSee your transaction in:\nhttps://explorer.solana.com/tx/${result.transactionSignature}?cluster=${result.networkConfiguration}`);
-      await storeToken(publicKey.toBase58(),result.mintAddress,tokenName,tokenSymbol,tokenSupply,result.transactionSignature,result.networkConfiguration);
+      toast.success(`Token created successfully.`);
+      await storeToken(publicKey.toBase58(), result.mintAddress, tokenName, tokenSymbol, tokenSupply, result.transactionSignature, result.networkConfiguration);
       resetForm();
     } else {
       toast.error(`Token creation failed: ${result.message}`);
       resetForm();
     }
+    setIsCreating(false); // Re-enable the button
   };
 
   // FAQ data
-  const faqItems = [
-    {
-      question: "What is the Solana Token Creator?",
-      answer: "The SPLForge Solana Token Creator is an advanced Smart Contract empowering users to effortlessly generate customized SPL Tokens (Solana tokens), specifically tailored to their preferences in terms of supply, name, symbol, description, and image on the Solana Chain. Making tokens is super quick and cheap with our easy process.",
-    },
-    {
-      question: "Is it Safe to Create Solana Tokens here?",
-      answer: "Yes, our tools is completely safe. It is a dApp that creates your token, giving you and only you the mint and freeze Authority (the control of a SPL Token). Our dApp could be used by hundred of users keeping the same security level, high availability and throughput.",
-    },
-    {
-      question: "How much time will the Solana Token Creator Take?",
-      answer: "The time of your Token Creation depends on the TPS Status of Solana. It usually takes just a few seconds so do not worry, you will see your recently token created in the Token Dashboard page. If you have any issue please contact us",
-    },
-    {
-      question: "How much does it cost?",
-      answer: "The token creation costs 0.1 SOL, it doesn't includes fees for Token Creation in Solana mainnet (aprox 0.01).",
-    },
-    {
-      question: "Which wallet can I use?",
-      answer: "You can use any Solana-compatible wallet, such as Phantom, Solflare, Torus or Ledger.",
-    },
-    {
-      question: "How many tokens can I create for each decimal amount?",
-      answer: "Here is the max amount of tokens you can create for each decimal range. \n\n 0 to 4 - 1,844,674,407,370,955 \n 5 to 7 - 1,844,674,407,370 \n 8 - 184,467,440,737 \n 9 - 18,446,744,073",
-    },
-  ];
+  // Removed local duplicate of faqItems to use shared content where needed.
 
   // Function to toggle FAQ items
   const toggleFAQ = (index: number) => {
@@ -308,101 +288,89 @@ export const TokenCreator = () => {
 
   return (
     <div id="webcrumbs">
-      <div className="p-6 md:p-8 rounded-xl flex flex-col lg:flex-row gap-6">
+      <div className="flex flex-col lg:flex-row gap-8">
         {/* Left Side: Form */}
-        <div className="w-full lg:w-1/2 bg-indigo-950/50 backdrop-blur-sm p-6 rounded-xl border border-indigo-800/30">
-          <div className="flex flex-col gap-5">
-            <h1 className="text-3xl font-bold">Solana Token Creator</h1>
-            <p className="text-base">
-              The perfect tool to create Solana SPL tokens.
-              <br />
-              Simple, user friendly, and fast.
+        <div className="w-full lg:w-[60%] bg-neutral/60 backdrop-blur-xl p-8 rounded-2xl border border-white/10 shadow-2xl">
+          <div className="flex flex-col gap-3 mb-8">
+            <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400">Solana Token Creator</h1>
+            <p className="text-gray-400 text-sm">
+              The perfect tool to create Solana SPL tokens. Simple, user friendly, and fast.
             </p>
           </div>
 
-          <div className="space-y-6 mt-6">
+          <div className="space-y-6">
             {/* Name and Symbol Inputs */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="relative">
-                <div className="flex justify-between items-center bg-indigo-900/50 border border-indigo-700/30 rounded-t-lg px-3 py-1">
-                  <span className="text-indigo-300 text-sm">Name</span>
-                </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+              <div className="relative">
+                <label className="block text-gray-300 text-xs font-semibold mb-2 tracking-wide uppercase">Name</label>
                 <input
                   type="text"
                   placeholder="Enter token name"
-                  className="w-full bg-slate-700 px-4 py-3 rounded-b-lg text-white placeholder-gray-400 hover:bg-slate-600 transition-colors"
+                  className="w-full bg-black/50 border border-white/10 focus:border-primary-focus focus:ring-1 focus:ring-primary-focus transition-all rounded-lg px-4 py-3 text-white placeholder-gray-500 outline-none"
                   value={tokenName}
                   onChange={handleTokenNameChange}
                 />
-                {tokenNameError && <p className="text-red-500 text-sm mt-1">{tokenNameError}</p>}
+                {tokenNameError && <p className="text-red-500 text-xs mt-2">{tokenNameError}</p>}
               </div>
 
               <div className="relative">
-                <div className="flex justify-between items-center bg-indigo-900/50 border border-indigo-700/30 rounded-t-lg px-3 py-1">
-                  <span className="text-indigo-300 text-sm">Symbol</span>
-                </div>
+                <label className="block text-gray-300 text-xs font-semibold mb-2 tracking-wide uppercase">Symbol</label>
                 <input
                   type="text"
                   placeholder="Enter token symbol"
-                  className="w-full bg-slate-700 px-4 py-3 rounded-b-lg text-white placeholder-gray-400 hover:bg-slate-600 transition-colors"
+                  className="w-full bg-black/50 border border-white/10 focus:border-primary-focus focus:ring-1 focus:ring-primary-focus transition-all rounded-lg px-4 py-3 text-white placeholder-gray-500 outline-none"
                   value={tokenSymbol}
                   onChange={handleTokenSymbolChange}
                 />
-                {tokenSymbolError && <p className="text-red-500 text-sm mt-1">{tokenSymbolError}</p>}
+                {tokenSymbolError && <p className="text-red-500 text-xs mt-2">{tokenSymbolError}</p>}
               </div>
             </div>
 
             {/* Decimals and Supply Inputs */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="relative">
-                <div className="flex justify-between items-center bg-indigo-900/50 border border-indigo-700/30 rounded-t-lg px-3 py-1">
-                  <span className="text-indigo-300 text-sm">Decimals</span>
-                </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+              <div className="relative">
+                <label className="block text-gray-300 text-xs font-semibold mb-2 tracking-wide uppercase">Decimals</label>
                 <input
                   type="number"
-                  placeholder="Enter decimals (e.g., 6)"
-                  className="w-full bg-slate-700 px-4 py-3 rounded-b-lg text-white placeholder-gray-400 hover:bg-slate-600 transition-colors"
+                  placeholder="e.g. 6 (Recommended)"
+                  className="w-full bg-black/50 border border-white/10 focus:border-primary-focus focus:ring-1 focus:ring-primary-focus transition-all rounded-lg px-4 py-3 text-white placeholder-gray-500 outline-none"
                   value={tokenDecimals}
                   onChange={handleTokenDecimalsChange}
                   min="1"
                   max="9"
                   step="1"
                 />
-                {tokenDecimalsError && <p className="text-red-500 text-sm mt-1">{tokenDecimalsError}</p>}
+                {tokenDecimalsError && <p className="text-red-500 text-xs mt-2">{tokenDecimalsError}</p>}
               </div>
 
               <div className="relative">
-                <div className="flex justify-between items-center bg-indigo-900/50 border border-indigo-700/30 rounded-t-lg px-3 py-1">
-                  <span className="text-indigo-300 text-sm">Supply</span>
-                  <div className="flex items-center gap-2">
-                    <button
-                      onClick={() => setTokenSupply("21000000")}
-                      className="text-indigo-400 text-sm hover:text-white transition-colors"
-                    >
-                      Recommended
-                    </button>
-                  </div>
+                <div className="flex justify-between items-end mb-2">
+                  <label className="block text-gray-300 text-xs font-semibold tracking-wide uppercase">Supply</label>
+                  <button
+                    onClick={() => setTokenSupply("21000000")}
+                    className="text-[10px] text-primary-focus hover:text-purple-300 font-semibold uppercase transition-colors"
+                  >
+                    Recommended
+                  </button>
                 </div>
                 <input
                   type="number"
-                  placeholder="Enter total supply"
-                  className="w-full bg-slate-700 px-4 py-3 rounded-b-lg text-white placeholder-gray-400 hover:bg-slate-600 transition-colors"
+                  placeholder="1000000"
+                  className="w-full bg-black/50 border border-white/10 focus:border-primary-focus focus:ring-1 focus:ring-primary-focus transition-all rounded-lg px-4 py-3 text-white placeholder-gray-500 outline-none"
                   value={tokenSupply}
                   onChange={handleTokenSupplyChange}
                   min="1"
                   step="1"
                 />
-                {tokenSupplyError && <p className="text-red-500 text-sm mt-1">{tokenSupplyError}</p>}
+                {tokenSupplyError && <p className="text-red-500 text-xs mt-2">{tokenSupplyError}</p>}
               </div>
             </div>
 
             {/* Token Image Upload */}
             <div className="relative">
-              <div className="flex justify-between items-center bg-indigo-900/50 border border-indigo-700/30 rounded-t-lg px-3 py-1">
-                <span className="text-indigo-300 text-sm">Image</span>
-              </div>
-              <div className="w-full bg-slate-700 px-4 py-2 rounded-b-lg text-white placeholder-gray-400 hover:bg-slate-600 transition-colors">
-                <div className="w-full h-24 flex items-center justify-center rounded-lg border-2 border-dashed border-indigo-700/30 cursor-pointer">
+              <label className="block text-gray-300 text-xs font-semibold mb-2 tracking-wide uppercase">Image</label>
+              <div className="w-full bg-black/50 border border-white/10 focus-within:border-primary-focus focus-within:ring-1 focus-within:ring-primary-focus transition-all rounded-lg p-2">
+                <div className="w-full h-24 flex items-center justify-center rounded-lg border-2 border-dashed border-white/20 hover:border-primary-focus transition-colors cursor-pointer bg-white/5">
                   <UploadFile onFileUpload={(url) => setTokenImage(url)} resetImage={resetImage} />
                 </div>
               </div>
@@ -410,43 +378,45 @@ export const TokenCreator = () => {
 
             {/* Description Textarea */}
             <div className="relative">
-              <div className="flex justify-between items-center bg-indigo-900/50 border border-indigo-700/30 rounded-t-lg px-3 py-1">
-                <span className="text-indigo-300 text-sm">Description</span>
-                <span className="text-indigo-400 text-sm">
+              <div className="flex justify-between items-end mb-2">
+                <label className="block text-gray-300 text-xs font-semibold tracking-wide uppercase">Description</label>
+                <span className="text-[10px] text-gray-500 font-semibold uppercase">
                   {tokenDescription.length}/{MAX_DESCRIPTION_LENGTH}
                 </span>
               </div>
               <textarea
                 placeholder="Enter token description"
-                className="w-full bg-slate-700 px-4 py-2 rounded-b-lg text-white placeholder-gray-400 hover:bg-slate-600 transition-colors"
+                className="w-full bg-black/50 border border-white/10 focus:border-primary-focus focus:ring-1 focus:ring-primary-focus transition-all rounded-lg px-4 py-3 text-white placeholder-gray-500 outline-none resize-none"
                 rows={4}
                 value={tokenDescription}
                 onChange={handleDescriptionChange}
               />
-              {tokenDescriptionError && <p className="text-red-500 text-sm mt-1">{tokenDescriptionError}</p>}
+              {tokenDescriptionError && <p className="text-red-500 text-xs mt-2">{tokenDescriptionError}</p>}
             </div>
 
             {/* Revoke Freeze Authority */}
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between p-4 bg-black/30 border border-white/5 rounded-xl">
               <div className="flex items-center gap-2">
-                <span className="text-indigo-300 text-sm">Revoke Freeze Authority (Required)</span>
-                <span
-                  className="material-symbols-outlined text-indigo-400 text-lg cursor-pointer"
+                <span className="text-gray-300 text-sm font-medium">Revoke Freeze Authority (Required)</span>
+                <button
+                  className="material-symbols-outlined text-gray-500 hover:text-primary-focus text-lg transition-colors focus:outline-none"
                   onClick={() => setFreezeInfo(true)}
                 >
                   info
-                </span>
+                </button>
                 {showFreezeInfo && (
-                  <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-                    <div className="bg-indigo-900/90 p-6 rounded-lg max-w-sm text-indigo-300 text-sm relative">
+                  <div className="fixed inset-0 flex items-center justify-center bg-black/80 z-[100] backdrop-blur-sm" onClick={() => setFreezeInfo(false)}>
+                    <div className="bg-neutral p-6 rounded-xl border border-white/10 max-w-sm text-gray-300 text-sm relative shadow-2xl" onClick={e => e.stopPropagation()}>
                       <button
-                        className="absolute top-2 right-2 text-indigo-400 hover:text-indigo-200"
+                        className="absolute top-3 right-3 text-gray-500 hover:text-white transition-colors"
                         onClick={() => setFreezeInfo(false)}
                       >
                         <span className="material-symbols-outlined">close</span>
                       </button>
+                      <h4 className="font-bold text-white mb-2 text-lg">Freeze Authority</h4>
                       <p>
-                        (REQUIRED)<br></br>Revoke Freeze allows you to create a liquidity pool.
+                        <span className="text-primary-focus font-bold uppercase text-xs tracking-wider">Required</span><br />
+                        Revoking freeze authority is absolutely mandatory if you plan to create a liquidity pool on Solana DEXs.
                       </p>
                     </div>
                   </div>
@@ -455,71 +425,68 @@ export const TokenCreator = () => {
             </div>
 
             {/* Revoke Mint Authority */}
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between p-4 bg-black/30 border border-white/5 rounded-xl">
               <div className="flex items-center gap-2">
-                <span className="text-indigo-300 text-sm">Revoke Mint Authority</span>
-                <span
-                  className="material-symbols-outlined text-indigo-400 text-lg cursor-pointer"
+                <span className="text-gray-300 text-sm font-medium">Revoke Mint Authority</span>
+                <button
+                  className="material-symbols-outlined text-gray-500 hover:text-primary-focus text-lg transition-colors focus:outline-none"
                   onClick={() => setMintInfo(true)}
                 >
                   info
-                </span>
+                </button>
                 {showMintInfo && (
-                  <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-                    <div className="bg-indigo-900/90 p-6 rounded-lg max-w-sm text-indigo-300 text-sm relative">
+                  <div className="fixed inset-0 flex items-center justify-center bg-black/80 z-[100] backdrop-blur-sm" onClick={() => setMintInfo(false)}>
+                    <div className="bg-neutral p-6 rounded-xl border border-white/10 max-w-sm text-gray-300 text-sm relative shadow-2xl" onClick={e => e.stopPropagation()}>
                       <button
-                        className="absolute top-2 right-2 text-indigo-400 hover:text-indigo-200"
+                        className="absolute top-3 right-3 text-gray-500 hover:text-white transition-colors"
                         onClick={() => setMintInfo(false)}
                       >
                         <span className="material-symbols-outlined">close</span>
                       </button>
+                      <h4 className="font-bold text-white mb-2 text-lg">Mint Authority</h4>
                       <p>
-                        Mint Authority allows you to increase tokens supply.
+                        Revoking mint authority ensures the supply is permanently capped. This is essential for investor trust.
                       </p>
                     </div>
                   </div>
                 )}
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-3">
                 <button
-                  className={`w-10 h-6 rounded-full transition-colors ${
-                    toggleEnabled ? "bg-green-500" : "bg-gray-500"
-                  }`}
+                  className={`w-11 h-6 rounded-full transition-colors relative focus:outline-none shadow-inner ${toggleEnabled ? "bg-primary-focus" : "bg-white/20"
+                    }`}
                   onClick={() => setToggleEnabled(!toggleEnabled)}
                 >
                   <div
-                    className={`w-4 h-4 bg-white rounded-full shadow-sm transform transition-transform ${
-                      toggleEnabled ? "translate-x-6" : "translate-x-0"
-                    }`}
+                    className={`absolute top-1 left-1 w-4 h-4 bg-white rounded-full shadow-sm transform transition-transform ${toggleEnabled ? "translate-x-5" : "translate-x-0"
+                      }`}
                   />
                 </button>
-                <span className="text-indigo-400 text-sm">(0.1 SOL)</span>
+                <span className="text-gray-400 text-sm font-semibold">+ 0.1 SOL</span>
               </div>
             </div>
 
             {/* Show More Options Button */}
             <div className="flex justify-start">
-            <button
-                className="flex items-center text-indigo-400 hover:text-indigo-300 transition-colors"
+              <button
+                className="flex items-center text-gray-400 hover:text-white transition-colors text-sm font-medium tracking-wide focus:outline-none"
                 onClick={() => setShowMoreOptions(!showMoreOptions)}
               >
-                <span className="mr-2">Show more options</span>
-                <span className="material-symbols-outlined">
-                  {showMoreOptions ? "arrow_drop_up" : "arrow_drop_down"}
+                <span className="mr-1">Show more options</span>
+                <span className="material-symbols-outlined text-xl transition-transform duration-200" style={{ transform: showMoreOptions ? 'rotate(180deg)' : 'rotate(0deg)' }}>
+                  expand_more
                 </span>
               </button>
             </div>
 
             {/* Optional Fields (Telegram, Website, X) */}
             {showMoreOptions && (
-              <div className="space-y-4">
+              <div className="space-y-5 animate-in fade-in slide-in-from-top-2 duration-300">
                 {/* Telegram Link */}
                 <div className="relative">
-                  <div className="flex justify-between items-center bg-indigo-900/50 border border-indigo-700/30 rounded-t-lg px-3 py-1">
-                    <span className="text-indigo-300 text-sm">Telegram Link</span>
-                  </div>
-                  <div className="flex items-center bg-slate-700 px-4 py-3 rounded-b-lg text-white placeholder-gray-400 hover:bg-slate-600 transition-colors">
-                    <span className="text-gray-400">https://</span>
+                  <label className="block text-gray-300 text-xs font-semibold mb-2 tracking-wide uppercase">Telegram Link</label>
+                  <div className="flex items-center bg-black/50 border border-white/10 focus-within:border-primary-focus focus-within:ring-1 focus-within:ring-primary-focus transition-all rounded-lg px-4 py-3 text-white placeholder-gray-500">
+                    <span className="text-gray-500 mr-1 select-none">https://</span>
                     <input
                       type="text"
                       placeholder="t.me/username"
@@ -529,16 +496,14 @@ export const TokenCreator = () => {
                       onBlur={handleTelegramLinkBlur}
                     />
                   </div>
-                  {telegramLinkError && <p className="text-red-500 text-sm mt-1">{telegramLinkError}</p>}
+                  {telegramLinkError && <p className="text-red-500 text-xs mt-2">{telegramLinkError}</p>}
                 </div>
 
                 {/* Website Link */}
                 <div className="relative">
-                  <div className="flex justify-between items-center bg-indigo-900/50 border border-indigo-700/30 rounded-t-lg px-3 py-1">
-                    <span className="text-indigo-300 text-sm">Website Link</span>
-                  </div>
-                  <div className="flex items-center bg-slate-700 px-4 py-3 rounded-b-lg text-white placeholder-gray-400 hover:bg-slate-600 transition-colors">
-                    <span className="text-gray-400">https://</span>
+                  <label className="block text-gray-300 text-xs font-semibold mb-2 tracking-wide uppercase">Website Link</label>
+                  <div className="flex items-center bg-black/50 border border-white/10 focus-within:border-primary-focus focus-within:ring-1 focus-within:ring-primary-focus transition-all rounded-lg px-4 py-3 text-white placeholder-gray-500">
+                    <span className="text-gray-500 mr-1 select-none">https://</span>
                     <input
                       type="text"
                       placeholder="example.com"
@@ -548,26 +513,24 @@ export const TokenCreator = () => {
                       onBlur={handleWebsiteLinkBlur}
                     />
                   </div>
-                  {websiteLinkError && <p className="text-red-500 text-sm mt-1">{websiteLinkError}</p>}
+                  {websiteLinkError && <p className="text-red-500 text-xs mt-2">{websiteLinkError}</p>}
                 </div>
 
                 {/* X (Twitter) Link */}
                 <div className="relative">
-                  <div className="flex justify-between items-center bg-indigo-900/50 border border-indigo-700/30 rounded-t-lg px-3 py-1">
-                    <span className="text-indigo-300 text-sm">X (Twitter) Link</span>
-                  </div>
-                  <div className="flex items-center bg-slate-700 px-4 py-3 rounded-b-lg text-white placeholder-gray-400 hover:bg-slate-600 transition-colors">
-                    <span className="text-gray-400">https://</span>
+                  <label className="block text-gray-300 text-xs font-semibold mb-2 tracking-wide uppercase">X (Twitter) Link</label>
+                  <div className="flex items-center bg-black/50 border border-white/10 focus-within:border-primary-focus focus-within:ring-1 focus-within:ring-primary-focus transition-all rounded-lg px-4 py-3 text-white placeholder-gray-500">
+                    <span className="text-gray-500 mr-1 select-none">https://</span>
                     <input
                       type="text"
-                      placeholder="twitter.com/username"
+                      placeholder="x.com/username"
                       className="w-full bg-transparent outline-none"
                       value={twitterLink.replace("https://", "")}
                       onChange={handleTwitterLinkChange}
                       onBlur={handleTwitterLinkBlur}
                     />
                   </div>
-                  {twitterLinkError && <p className="text-red-500 text-sm mt-1">{twitterLinkError}</p>}
+                  {twitterLinkError && <p className="text-red-500 text-xs mt-2">{twitterLinkError}</p>}
                 </div>
               </div>
             )}
@@ -575,39 +538,65 @@ export const TokenCreator = () => {
 
             {/* Create Token Button */}
             <button
-              className="w-full bg-indigo-600 hover:bg-indigo-500 text-white py-3 rounded-lg transition-colors"
+              className={`w-full font-bold py-4 rounded-xl transition-all duration-300 text-base flex items-center justify-center gap-3 shadow-[0_0_20px_rgba(153,69,255,0.3)]
+                ${(!signTransaction || isCreating)
+                  ? "bg-gray-800 text-gray-500 cursor-not-allowed border border-white/5"
+                  : "bg-gradient-to-r from-purple-600 to-primary text-white hover:from-purple-500 hover:to-primary-focus hover:shadow-[0_0_30px_rgba(153,69,255,0.5)] border border-white/10 relative overflow-hidden group"
+                }`}
               onClick={handleCreateToken}
-              disabled={!signTransaction}
+              disabled={!signTransaction || isCreating}
             >
-              Create Token
+              {isCreating ? (
+                <>
+                  <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                  Creating Token...
+                </>
+              ) : (
+                <>
+                  <span className="absolute w-0 h-0 transition-all duration-500 ease-out bg-white rounded-full group-hover:w-56 group-hover:h-56 opacity-10"></span>
+                  Create Token
+                </>
+              )}
             </button>
           </div>
         </div>
 
         {/* Right Side: Instructions */}
-        <div className="w-full lg:w-1/2 flex flex-col gap-5">
-          <h1 className="text-xl font-bold">Create Solana Token</h1>
-          <p className="text-base">Effortlessly create your Solana SPL Token with our simple process – no coding required.</p>
-          <p className="text-base">Customize your Solana Token exactly the way you envision it. Less than 5 minutes, at an affordable cost.</p>
-          <br></br>
-          <h2 className="text-xl font-bold">How to use Solana Token Creator</h2>
-          <p className="text-base">1. Connect your Solana wallet.</p>
-          <p className="text-base">2. Specify the desired name for your Token</p>
-          <p className="text-base">3. Indicate the symbol (max 8 characters).</p>
-          <p className="text-base">4. Select the decimals quantity (default recommended 6 for all tokens)</p>
-          <p className="text-base">5. Determine the Supply of your Token.</p>
-          <p className="text-base">6. Upload the image for your token (PNG). - Optional</p>
-          <p className="text-base">7. Provide a brief description for your SPL Token. - Optional</p>
-          <p className="text-base">8. Click on create, accept the transaction and wait until your tokens ready.</p>
-          <p className="text-base">The SPLForge&lsquo;s fee for Token creation is 0.1 SOL, not covering fees for SPL Token Creation.</p>
-          <br></br>
-          <h2 className="text-xl font-bold">Revoke Freeze Authority:</h2>
-          <p className="text-base text-indigo-300">If you want to create a liquidity pool you will need to &lsquo;Revoke Freeze Authority&rsquo; of the Token - Required.</p>
-          <h2 className="text-xl font-bold">Revoke Mint Authority:</h2>
-          <p className="text-base text-indigo-300">Revoking mint authority ensures that there can be no more tokens minted than the total supply. This provides security and peace of mind to buyers. The cost is 0.1 SOL</p>
-          <br></br>
-          <p className="text-base">Once the creation process starts, it will only take a few seconds! Once complete, you will receive the total supply of the token in your wallet.</p>
-          <p className="text-base">With our user-friendly platform, managing your tokens is simple and affordable.</p>
+        <div className="w-full lg:w-[40%] flex flex-col gap-6 lg:pl-6 text-gray-300">
+          <div>
+            <h2 className="text-xl font-bold text-white mb-2">Create Solana Token</h2>
+            <p className="text-sm leading-relaxed text-gray-400">Effortlessly create your Solana SPL Token with our simple process – no coding required. Customize your Solana Token exactly the way you envision it. Less than 5 minutes, at an affordable cost.</p>
+          </div>
+
+          <div className="bg-black/30 border border-white/5 rounded-xl p-6">
+            <h2 className="text-lg font-bold text-white mb-4 flex items-center"><span className="material-symbols-outlined mr-2 text-primary-focus">list_alt</span>How to use Solana Token Creator</h2>
+            <ul className="space-y-3 text-sm text-gray-400 list-decimal pl-5 marker:text-primary-focus">
+              {tokenCreatorInstructions.map((instruction, idx) => (
+                <li key={idx} className="leading-relaxed">{instruction}</li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="bg-primary/5 border border-primary-focus/20 rounded-xl p-6 relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-primary-focus/10 rounded-full blur-3xl"></div>
+            <h2 className="text-sm font-bold text-primary-focus mb-2 uppercase tracking-wide">Pricing</h2>
+            <p className="text-2xl font-bold text-white mb-1">0.1 SOL</p>
+            <p className="text-xs text-gray-400">The SPLForge fee for Token creation is 0.1 SOL. This does not cover the native Solana network fees for SPL Token Creation, which cost roughly 0.01 SOL.</p>
+          </div>
+
+          <div className="space-y-4">
+            <div>
+              <h2 className="text-sm font-bold text-white mb-1">Revoke Freeze Authority:</h2>
+              <p className="text-xs text-gray-400">If you want to create a liquidity pool you will need to &lsquo;Revoke Freeze Authority&rsquo; of the Token - Required.</p>
+            </div>
+            <div>
+              <h2 className="text-sm font-bold text-white mb-1">Revoke Mint Authority:</h2>
+              <p className="text-xs text-gray-400">Revoking mint authority ensures that there can be no more tokens minted than the total supply. This provides security and peace of mind to buyers. The cost is 0.1 SOL</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>

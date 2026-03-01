@@ -18,31 +18,31 @@ module.exports = {
     // TODO: Theme needs works
     themes: [
       {
-        'solana': { 
+        'solana': {
           fontFamily: {
             display: ['PT Mono, monospace'],
             body: ['Inter, sans-serif'],
           },
-          'primary': '#000000',           /* Primary color */
-          'primary-focus': '#9945FF',     /* Primary color - focused */
-          'primary-content': '#ffffff',   /* Foreground content color to use on primary color */
+          'primary': '#0a0a0a',           /* Primary color (deep black) */
+          'primary-focus': '#9945FF',     /* Primary color - focused (Solana Purple) */
+          'primary-content': '#ffffff',
 
-          'secondary': '#808080',         /* Secondary color */
-          'secondary-focus': '#f3cc30',   /* Secondary color - focused */
-          'secondary-content': '#ffffff', /* Foreground content color to use on secondary color */
+          'secondary': '#171717',         /* Secondary color (dark gray) */
+          'secondary-focus': '#14F195',   /* Secondary color - focused (Solana Green) */
+          'secondary-content': '#ffffff',
 
-          'accent': '#33a382',            /* Accent color */
-          'accent-focus': '#2aa79b',      /* Accent color - focused */
-          'accent-content': '#ffffff',    /* Foreground content color to use on accent color */
+          'accent': '#9945FF',            /* Accent color (Solana Purple) */
+          'accent-focus': '#7e22ce',
+          'accent-content': '#ffffff',
 
-          'neutral': '#2b2b2b',           /* Neutral color */
-          'neutral-focus': '#2a2e37',     /* Neutral color - focused */
-          'neutral-content': '#ffffff',   /* Foreground content color to use on neutral color */
+          'neutral': '#171717',           /* Neutral color */
+          'neutral-focus': '#262626',
+          'neutral-content': '#ffffff',
 
-          'base-100': '#000000',          /* Base color of page, used for blank backgrounds */
-          'base-200': '#35363a',          /* Base color, a little darker */
-          'base-300': '#222222',          /* Base color, even more darker */
-          'base-content': '#f9fafb',      /* Foreground content color to use on base color */
+          'base-100': '#000000',          /* Base color of page */
+          'base-200': '#0a0a0a',
+          'base-300': '#171717',
+          'base-content': '#f9fafb',
 
           'info': '#2094f3',              /* Info */
           'success': '#009485',           /* Success */

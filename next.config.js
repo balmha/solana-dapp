@@ -4,8 +4,7 @@ const nextConfig = {
   images: {
     domains: ['cryptologos.cc', 'assets.coingecko.com'], // Add the domain here
     unoptimized: true
-  },
-  
+  }
 }
 
 module.exports = nextConfig

@@ -1,0 +1,9 @@
+# splforge
+
+> SPLForge is a fast, cheap Next.js webDapp for creating Solana (SPL) tokens effortlessly without coding.
+
+## Core Features
+- [About Us](/about.md)
+- [Solana Token Creator](/tokencreator.md)
+- [Solana Liquidity Pool Creator](/liquiditypool.md)
+- [Full Documentation](/llms-full.txt)

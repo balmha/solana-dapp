@@ -20,29 +20,24 @@ export const HomeView: FC = () => {
 
         {/* Text and Buttons Section */}
         <div className="flex flex-col items-center text-center">
-          <h4 className="text-2xl md:text-4xl text-slate-300 my-2">
-            <p className="sourcesans-text text-slate-300 font-semibold">
-              Create and Manage Tokens on Solana.
-            </p>
+          <div className="text-2xl md:text-5xl text-white my-2 font-bold tracking-tight">
+            <h1 className="bg-clip-text text-transparent bg-gradient-to-r from-white via-gray-200 to-gray-500 pb-2">
+              Create and Manage<br />Tokens on Solana.
+            </h1>
             <br />
-            <p className="sourcesans-text text-slate-300 text-2xl leading-relaxed">
-              Easily create SPL tokens and liquidity pools with SPLForge.
-            </p>
-          </h4>
+            <h2 className="text-gray-400 text-xl md:text-2xl leading-relaxed font-medium max-w-2xl mt-4">
+              Easily create SPL tokens and liquidity pools with SPLForge in seconds. No coding required.
+            </h2>
+          </div>
           <br />
-          <div className="flex flex-col md:flex-row gap-4">
+          <div className="flex flex-col md:flex-row gap-6 mt-6">
             <Link
               href="/tokencreator"
-              className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-3 px-6 rounded transition-colors"
+              className="bg-gradient-to-r from-purple-600 to-primary text-white hover:from-purple-500 hover:to-primary-focus hover:shadow-[0_0_30px_rgba(153,69,255,0.4)] border border-white/10 font-bold py-4 px-10 rounded-xl transition-all duration-300 text-lg relative overflow-hidden group"
             >
-              Create Solana Tokens
+              <span className="absolute w-0 h-0 transition-all duration-500 ease-out bg-white rounded-full group-hover:w-56 group-hover:h-56 opacity-10"></span>
+              <span className="relative">Create Solana Tokens</span>
             </Link>
-{/*             <Link
-              href="/liquiditypool"
-              className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-3 px-6 rounded transition-colors"
-            >
-              Create Pool
-            </Link> */}
           </div>
         </div>
       </div>

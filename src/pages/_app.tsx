@@ -87,13 +87,28 @@ const App: FC<AppProps> = ({ Component, pageProps }) => {
           <Footer />
         </div>
       </ContextProvider>
-      <Toaster 
-        position="top-center"
+      <Toaster
+        position="bottom-right"
         toastOptions={{
           style: {
+            background: '#171717',
+            color: '#fff',
+            border: '1px solid rgba(255, 255, 255, 0.1)',
             maxWidth: '500px',
             wordBreak: 'break-word',
             whiteSpace: 'pre-wrap'
+          },
+          success: {
+            iconTheme: {
+              primary: '#14F195',
+              secondary: '#171717',
+            },
+          },
+          error: {
+            iconTheme: {
+              primary: '#ef4444',
+              secondary: '#171717',
+            }
           }
         }}
       />

@@ -6,10 +6,8 @@ interface Props {
 
 export const ContentContainer: FC<Props> = ({ children }) => {
   return (
-    <div className="flex-1 ml-0 md:ml-48 overflow-y-auto h-[calc(100vh-3.5rem)]">
-      <div className="p-4 2xl:mr-96">
-        {children}
-      </div>
-    </div>
+    <main className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-16 min-h-[calc(100vh-4rem-120px)]">
+      {children}
+    </main>
   );
 };
